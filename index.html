@@ -190,6 +190,17 @@
     letter-spacing: .01em;
   }
 
+  /* Design process images */
+  .process-img {
+    width: 100%;
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin: 16px 0 8px;
+  }
+  [data-theme="dark"] .process-img { opacity: .92; }
+
+
   /* Feature table */
   table.feat-table { width: 100%; border-collapse: collapse; font-size: 14px; }
   table.feat-table th {
@@ -220,7 +231,13 @@
   table.feat-table.skills-table th:nth-child(1), table.feat-table.skills-table td:nth-child(1) { width: 24%; }
   table.feat-table.skills-table th:nth-child(2), table.feat-table.skills-table td:nth-child(2) { width: 26%; }
   table.feat-table.skills-table th:nth-child(3), table.feat-table.skills-table td:nth-child(3) { width: 50%; }
+  table.feat-table.skills-table th:nth-child(2), table.feat-table.skills-table td:nth-child(2),
+  table.feat-table.skills-table th:nth-child(3), table.feat-table.skills-table td:nth-child(3) {
+    border-left: 1px solid var(--border);
+    padding-left: 14px;
+  }
   @media (max-width: 620px) {
+    table.feat-table.skills-table td { border-left: none !important; padding-left: 0 !important; }
     table.feat-table.skills-table, table.feat-table.skills-table thead, table.feat-table.skills-table tbody, table.feat-table.skills-table tr { display: block; }
     table.feat-table.skills-table thead { display: none; }
     table.feat-table.skills-table td { display: block; width: 100% !important; border-bottom: none; padding: 2px 0; }
@@ -344,7 +361,8 @@
   <a href="#built-with">05 Built With</a>
   <a href="#went">06 Where This Went</a>
   <a href="#process">07 Process</a>
-  <a href="#skills">08 Skills Exercised</a>
+  <a href="#design-process">08 Design Process</a>
+  <a href="#skills">09 Skills Exercised</a>
 </nav>
 
 <div class="shell">
@@ -527,8 +545,35 @@ FLAGS:
     </div>
   </section>
 
-  <section class="sec" id="skills">
+  <section class="sec" id="design-process">
     <p class="sec-num">08</p>
+    <h2>Design Process</h2>
+    <p>I was never trained to design software architecture. I have just always sketched systems out before writing any code, a habit that started well before I had a name for it. Triad's actual starting point was not a spec or a diagramming tool, it was a notebook.</p>
+
+    <p class="code-label">Early Notes</p>
+    <img class="process-img" src="process/notes-questions.png" alt="Handwritten notes and questions from early Triad planning">
+    <p class="chart-caption">The actual questions that shaped the project, written before any code existed</p>
+
+    <p>Two of those questions ended up mattering more than the rest. Asking what makes a package useful and relevant led directly to treating documentation as part of the deliverable rather than an afterthought, the same instinct behind the dev log and prompt journal linked in Process. Asking how to prove the package works beyond just personal use is still an open question, and it is the honest limitation of building on a single-user dataset.</p>
+
+    <p class="code-label">Architecture Sketch &#8594; Pipeline</p>
+    <img class="process-img" src="process/erd-sketch.png" alt="Early sketch of the Triad data architecture">
+    <p class="chart-caption">The first pass at the data flow, sketched before a single table existed</p>
+
+    <p>This sketch is the direct ancestor of the pipeline diagram in Pipeline. The four stages, ingest, database, feature engineering, and recommendation, never actually changed between this drawing and the finished package. What changed was everything underneath each box.</p>
+
+    <p class="code-label">UI Wireframe &#8594; BodyByData</p>
+    <img class="process-img" src="process/ui-wireframe.png" alt="Early hand-drawn wireframe of the BodyByData interface">
+    <p class="chart-caption">The first wireframe of the app Triad's data would eventually power</p>
+
+    <p>The wireframe came from the same notebook, sketched in Concepts on iOS, where I test layout and logo ideas before touching a real design tool. Claude, Canva, and Figma took over from there for the version that actually gets built. This drawing's welcome panel, daily-adjustment cards, and goals section are still recognizable in the BodyByData mockup today.</p>
+    <a class="ref-link" href="#" data-placeholder="bodybydata-landing">
+      <span class="arrow">&#8594;</span> See BodyByData
+    </a>
+  </section>
+
+  <section class="sec" id="skills">
+    <p class="sec-num">09</p>
     <h2>Skills Exercised</h2>
     <p>Triad was a data science senior project, but building it end to end pulled in work well outside a stats curriculum. Below is the specific skill work behind each part of the project, tied to what actually demonstrates it.</p>
     <table class="feat-table skills-table">
