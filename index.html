@@ -140,6 +140,8 @@
   .diagram-step { fill: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 700; }
   .diagram-arrow { stroke: var(--border); stroke-width: 1.5; fill: none; }
   .diagram-arrowhead { fill: var(--border); }
+  .diagram-field { fill: var(--text-dim); font-family: var(--font-mono); font-size: 8.5px; }
+  .diagram-pk { fill: var(--accent); font-family: var(--font-mono); font-size: 8.5px; font-weight: 700; }
 
   /* Code panels */
   .code-label {
@@ -362,7 +364,8 @@
   <a href="#went">06 Where This Went</a>
   <a href="#process">07 Process</a>
   <a href="#design-process">08 Design Process</a>
-  <a href="#skills">09 Skills Exercised</a>
+  <a href="#data-wrangling">09 Data Wrangling</a>
+  <a href="#skills">10 Skills Exercised</a>
 </nav>
 
 <div class="shell">
@@ -570,10 +573,105 @@ FLAGS:
     <a class="ref-link" href="#" data-placeholder="bodybydata-landing">
       <span class="arrow">&#8594;</span> See BodyByData
     </a>
+
+    <p class="code-label">The Finished Schema</p>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <defs>
+          <marker id="arrowhead2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="diagram-arrowhead"/>
+          </marker>
+        </defs>
+
+        <text x="8" y="12" class="diagram-step">RAW INGESTION</text>
+        <rect x="8" y="20" width="124" height="80" rx="5" class="diagram-box"/>
+        <text x="16" y="35" class="diagram-label" style="font-size:10px;">workout_sessions</text>
+        <text x="16" y="49" class="diagram-pk">PK workout_id</text>
+        <text x="16" y="61" class="diagram-field">date</text>
+        <text x="16" y="72" class="diagram-field">total_volume</text>
+
+        <rect x="140" y="20" width="124" height="80" rx="5" class="diagram-box"/>
+        <text x="148" y="35" class="diagram-label" style="font-size:10px;">exercise_sets</text>
+        <text x="148" y="49" class="diagram-pk">PK set_id</text>
+        <text x="148" y="61" class="diagram-pk">FK workout_id</text>
+        <text x="148" y="72" class="diagram-field">muscle_group</text>
+
+        <rect x="272" y="20" width="124" height="80" rx="5" class="diagram-box"/>
+        <text x="280" y="35" class="diagram-label" style="font-size:10px;">sleep_records</text>
+        <text x="280" y="49" class="diagram-pk">PK sleep_id</text>
+        <text x="280" y="61" class="diagram-field">date</text>
+        <text x="280" y="72" class="diagram-field">stage</text>
+
+        <rect x="404" y="20" width="124" height="80" rx="5" class="diagram-box"/>
+        <text x="412" y="35" class="diagram-label" style="font-size:10px;">nutrition_logs</text>
+        <text x="412" y="49" class="diagram-pk">PK log_id</text>
+        <text x="412" y="61" class="diagram-field">date</text>
+        <text x="412" y="72" class="diagram-field">metric</text>
+
+        <rect x="536" y="20" width="124" height="80" rx="5" class="diagram-box"/>
+        <text x="544" y="35" class="diagram-label" style="font-size:10px;">calai_meals</text>
+        <text x="544" y="49" class="diagram-pk">PK meal_id</text>
+        <text x="544" y="61" class="diagram-field">food_name</text>
+        <text x="544" y="72" class="diagram-field">calories</text>
+
+        <line x1="132" y1="60" x2="140" y2="60" class="diagram-arrow" marker-end="url(#arrowhead2)"/>
+
+        <line x1="70" y1="100" x2="70" y2="112" class="diagram-arrow"/>
+        <line x1="70" y1="112" x2="598" y2="112" class="diagram-arrow"/>
+        <line x1="598" y1="112" x2="598" y2="100" class="diagram-arrow"/>
+        <line x1="90" y1="112" x2="90" y2="150" class="diagram-arrow" marker-end="url(#arrowhead2)"/>
+        <text x="100" y="135" class="diagram-field">join by date</text>
+
+        <text x="15" y="172" class="diagram-step">DERIVED</text>
+        <rect x="15" y="180" width="150" height="86" rx="5" class="diagram-box"/>
+        <text x="23" y="196" class="diagram-label" style="font-size:10px;">daily_summary</text>
+        <text x="23" y="210" class="diagram-pk">PK date</text>
+        <text x="23" y="222" class="diagram-field">sleep &#183; calories</text>
+        <text x="23" y="234" class="diagram-field">volume</text>
+
+        <rect x="175" y="180" width="150" height="86" rx="5" class="diagram-box"/>
+        <text x="183" y="196" class="diagram-label" style="font-size:10px;">user_features</text>
+        <text x="183" y="210" class="diagram-pk">PK date</text>
+        <text x="183" y="222" class="diagram-field">sleep_debt_7d</text>
+        <text x="183" y="234" class="diagram-field">recovery_score</text>
+
+        <rect x="335" y="180" width="150" height="86" rx="5" class="diagram-box"/>
+        <text x="343" y="196" class="diagram-label" style="font-size:10px;">recommendations</text>
+        <text x="343" y="210" class="diagram-pk">PK rec_id</text>
+        <text x="343" y="222" class="diagram-pk">FK date</text>
+        <text x="343" y="234" class="diagram-field">workout_advice</text>
+
+        <rect x="495" y="180" width="150" height="86" rx="5" class="diagram-box"/>
+        <text x="503" y="196" class="diagram-label" style="font-size:10px;">user_profile</text>
+        <text x="503" y="210" class="diagram-pk">PK id</text>
+        <text x="503" y="222" class="diagram-field">goal_text</text>
+
+        <line x1="165" y1="223" x2="175" y2="223" class="diagram-arrow" marker-end="url(#arrowhead2)"/>
+        <line x1="325" y1="223" x2="335" y2="223" class="diagram-arrow" marker-end="url(#arrowhead2)"/>
+        <line x1="495" y1="245" x2="485" y2="245" class="diagram-arrow" marker-end="url(#arrowhead2)"/>
+      </svg>
+    </div>
+    <p class="chart-caption">The full data model today: nine tables spanning raw ingestion and derived features, joined by date</p>
+  </section>
+
+  <section class="sec" id="data-wrangling">
+    <p class="sec-num">09</p>
+    <h2>Data Wrangling</h2>
+    <p>None of Triad's three data sources were built to talk to each other, and two of them were not built to talk to anything at all. Getting sleep, nutrition, and training into one table meant working around closed APIs and manual exports before a single feature could be engineered.</p>
+
+    <p><strong>Cal AI had no way out:</strong> its public developer API only supports food scanning, not retrieving personal meal history. The original plan was to fall back on Apple Health, since Cal AI does write there, but it turned out to only write water logs and a single body-mass reading, zero calories or macros. The PDF summary report was not a backup plan, it was the only nutrition path, parsed with <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">pdfplumber</code> and a regex built specifically for its row format.</p>
+
+    <p><strong>Zepp does not have a public API:</strong> reverse-engineered ones exist but are fragile enough to avoid. Zepp already syncs sleep data to Apple Health natively, so Apple Health became the bridge instead of the source.</p>
+
+    <p><strong>Hevy had a working API, and it still did not help:</strong> the sandbox used to build the ingestion script could not reach outside network calls at all. The fallback was Hevy's CSV export, which meant reconstructing 167 full workout sessions out of 2,308 flat, one-row-per-set rows by grouping on workout title and start time.</p>
+
+    <p><strong>Apple Health's own export nearly broke the parser:</strong> a single XML file, 314MB, too large to load into memory in one pass. The fix was rewriting the parser around streaming <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">iterparse()</code> with an explicit element clear after every record, so memory stayed flat no matter the file size.</p>
+
+    <p>The most expensive problem was not technical. After joining all three sources by date, only 4 days had sleep, nutrition, and training data at once, nowhere near enough to build anything on. The root cause was a nutrition app that had stopped being used months before the project started. Once the Cal AI PDF parser was working, that number went from 4 complete days to 15.</p>
   </section>
 
   <section class="sec" id="skills">
-    <p class="sec-num">09</p>
+    <p class="sec-num">10</p>
     <h2>Skills Exercised</h2>
     <p>Triad was a data science senior project, but building it end to end pulled in work well outside a stats curriculum. Below is the specific skill work behind each part of the project, tied to what actually demonstrates it.</p>
     <table class="feat-table skills-table">
