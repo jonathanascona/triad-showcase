@@ -241,6 +241,7 @@
   }
   .ref-link:hover { color: var(--accent); border-color: var(--accent); }
   .ref-link .arrow { color: var(--accent); font-family: var(--font-mono); }
+  .ref-stack { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
 
   /* Footer */
   footer {
@@ -328,6 +329,7 @@
   <a href="#signals">04 Signals</a>
   <a href="#built-with">05 Built With</a>
   <a href="#went">06 Where This Went</a>
+  <a href="#process">07 Process</a>
 </nav>
 
 <div class="shell">
@@ -490,6 +492,24 @@ FLAGS:
     <a class="ref-link" href="#" data-placeholder="bodybydata-landing">
       <span class="arrow">&#8594;</span> See BodyByData
     </a>
+  </section>
+
+  <section class="sec" id="process">
+    <p class="sec-num">07</p>
+    <h2>Process</h2>
+    <p>Triad did not start with a spec. It started with a frustration, a fast prototype, and a lot of iteration with an AI assistant to get from a vague idea to a working recommendation engine. What made it a real engineering project rather than a one-off experiment was documenting every rejected approach, not just the one that worked.</p>
+    <p><strong>The scoping, May 28:</strong> settled on a single research question: can sleep quality and prior training load predict optimal daily workout type and caloric targets for an individual athlete? The name "triad" came from the three inputs: sleep, nutrition, training.</p>
+    <p><strong>A rejected prompt design:</strong> an early draft of the recommendation prompt injected raw numbers only (<code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">sleep_debt_7d: -30.78</code>), and the model's response was inconsistent since it had to judge severity itself. The fix was adding explicit severity labels before the numbers ever reached the model, which made outputs consistent instead of guesswork.</p>
+    <p><strong>A rejected data model:</strong> tried mapping goal text to fixed parameters. That broke immediately on real input like "build muscle but don't want to bulk too much." The fix: pass goal text verbatim into the prompt and let the model interpret it, since that's what it is actually good at.</p>
+    <p>Every one of those wrong first attempts is logged with a timestamp, not cleaned up after the fact.</p>
+    <div class="ref-stack">
+      <a class="ref-link" href="https://github.com/jonathanascona/triad-showcase/blob/main/devlog.md" target="_blank" rel="noopener">
+        <span class="arrow">&#8594;</span> Read the full dev log
+      </a>
+      <a class="ref-link" href="https://github.com/jonathanascona/triad-showcase/blob/main/prompt-journal.md" target="_blank" rel="noopener">
+        <span class="arrow">&#8594;</span> Read the full prompt engineering journal
+      </a>
+    </div>
   </section>
 
   <footer>
