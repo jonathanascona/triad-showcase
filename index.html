@@ -217,6 +217,19 @@
     font-size: 12px;
   }
   table.feat-table tr:last-child td { border-bottom: none; }
+  table.feat-table.skills-table th:nth-child(1), table.feat-table.skills-table td:nth-child(1) { width: 24%; }
+  table.feat-table.skills-table th:nth-child(2), table.feat-table.skills-table td:nth-child(2) { width: 26%; }
+  table.feat-table.skills-table th:nth-child(3), table.feat-table.skills-table td:nth-child(3) { width: 50%; }
+  @media (max-width: 620px) {
+    table.feat-table.skills-table, table.feat-table.skills-table thead, table.feat-table.skills-table tbody, table.feat-table.skills-table tr { display: block; }
+    table.feat-table.skills-table thead { display: none; }
+    table.feat-table.skills-table td { display: block; width: 100% !important; border-bottom: none; padding: 2px 0; }
+    table.feat-table.skills-table td:first-child { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: .04em; color: var(--accent); font-weight: 700; padding-top: 14px; }
+    table.feat-table.skills-table td:nth-child(2) { color: var(--text-dim); font-size: 13px; }
+    table.feat-table.skills-table tr:last-child td:last-child { border-bottom: none; padding-bottom: 0; }
+    table.feat-table.skills-table tr { border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 4px; }
+    table.feat-table.skills-table tr:last-child { border-bottom: none; }
+  }
 
   /* Built with */
   .built-with { font-size: 16px; line-height: 1.68; }
@@ -518,17 +531,17 @@ FLAGS:
     <p class="sec-num">08</p>
     <h2>Skills Exercised</h2>
     <p>Triad was a data science senior project, but building it end to end pulled in work well outside a stats curriculum. Below is the specific skill work behind each part of the project, tied to what actually demonstrates it.</p>
-    <table class="feat-table">
-      <thead><tr><th>Skill</th><th>Where it shows up</th></tr></thead>
+    <table class="feat-table skills-table">
+      <thead><tr><th>Skill</th><th>Tools Used</th><th>How It Was Applied</th></tr></thead>
       <tbody>
-        <tr><td>Python packaging</td><td>Installable package with a small public API: <code>setup()</code>, <code>sync()</code>, <code>recommend()</code>, <code>today()</code></td></tr>
-        <tr><td>REST API integration</td><td>Hevy workout data puller, Apple Health XML parser, Cal AI PDF parser, unified into one ingest layer</td></tr>
-        <tr><td>Database design</td><td>SQLite schema joining sleep, nutrition, and training records by date into a single <code>daily_summary</code> table</td></tr>
-        <tr><td>Feature engineering &amp; applied statistics</td><td>Sleep debt, recovery score, training load change, and per-muscle-group fatigue, computed from raw daily numbers</td></tr>
-        <tr><td>Prompt engineering</td><td>Structuring severity-labeled inputs and free-text goals so the model reasons consistently instead of guessing (see Process)</td></tr>
-        <tr><td>Technical documentation</td><td>A README, a dev log, and a prompt engineering journal, maintained and timestamped throughout the build</td></tr>
-        <tr><td>Front-end development</td><td>This page: hand-built HTML and CSS, a custom SVG diagram, real syntax highlighting, and a live data chart</td></tr>
-        <tr><td>Visual and brand design</td><td>The wordmark, color system, and editorial layout, carried consistently across this page and BodyByData</td></tr>
+        <tr><td>Python packaging</td><td>Python 3.11 / 3.12, setuptools</td><td>Structured as an installable package with a small public API: <code>setup()</code>, <code>sync()</code>, <code>recommend()</code>, <code>today()</code></td></tr>
+        <tr><td>REST API integration</td><td>Hevy REST API, Apple HealthKit, pdfplumber</td><td>Built one ingest layer pulling workout, sleep, and nutrition data from three separate sources into a common format</td></tr>
+        <tr><td>Database design</td><td>SQLite</td><td>Designed the schema joining sleep, nutrition, and training records by date into a single <code>daily_summary</code> table</td></tr>
+        <tr><td>Feature engineering &amp; applied statistics</td><td>Python</td><td>Computed sleep debt, recovery score, training load change, and per-muscle-group fatigue from raw daily numbers</td></tr>
+        <tr><td>Prompt engineering</td><td>Anthropic Claude API</td><td>Structured severity-labeled inputs and free-text goals so the model reasons consistently instead of guessing (see Process)</td></tr>
+        <tr><td>Technical documentation</td><td>Markdown, GitHub</td><td>Maintained a README, a dev log, and a prompt engineering journal, timestamped throughout the build</td></tr>
+        <tr><td>Front-end development</td><td>HTML, CSS, JavaScript, Chart.js, highlight.js</td><td>Hand-built this page: a custom SVG diagram, real syntax highlighting, and a live data chart</td></tr>
+        <tr><td>Visual and brand design</td><td>Concepts, Canva, Figma</td><td>Sketched early wireframes and logo concepts, then iterated on the wordmark, color system, and layout carried across this page and BodyByData</td></tr>
       </tbody>
     </table>
   </section>
