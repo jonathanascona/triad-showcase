@@ -381,15 +381,16 @@
 <nav class="toc" aria-label="Section index">
   <p class="toc-label">On This Page</p>
   <a href="#problem">01 Problem</a>
-  <a href="#pipeline">02 Pipeline</a>
-  <a href="#install">03 Install</a>
-  <a href="#signals">04 Signals</a>
-  <a href="#built-with">05 Built With</a>
-  <a href="#went">06 Where This Went</a>
+  <a href="#design-process">02 Design Process</a>
+  <a href="#pipeline">03 Pipeline</a>
+  <a href="#problems">04 Problems Encountered</a>
+  <a href="#signals">05 Signals</a>
+  <a href="#formula">06 The Formula</a>
   <a href="#process">07 Process</a>
-  <a href="#design-process">08 Design Process</a>
-  <a href="#problems">09 Problems Encountered</a>
-  <a href="#skills">10 Skills Exercised</a>
+  <a href="#install">08 Install</a>
+  <a href="#built-with">09 Built With</a>
+  <a href="#went">10 Where This Went</a>
+  <a href="#skills">11 Skills Exercised</a>
 </nav>
 
 <div class="shell">
@@ -409,171 +410,8 @@
     <p class="lede-cap">Three things drive training results: sleep, nutrition, and training itself. Sleep governs recovery, hormone regulation, and muscle repair. Nutrition supplies the fuel for training and the protein for muscle synthesis. Training provides the stimulus that drives adaptation. When one of these is off, the others suffer, and every app on the market tracks only one of them in isolation. Triad pulls all three sources together and tells you, based on actual data, what your body needs today.</p>
   </section>
 
-  <section class="sec" id="pipeline">
-    <p class="sec-num">02</p>
-    <h2>Pipeline</h2>
-    <div class="diagram-wrap">
-      <svg viewBox="0 0 660 130" xmlns="http://www.w3.org/2000/svg" width="100%">
-        <defs>
-          <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-            <path d="M0,0 L10,5 L0,10 z" class="diagram-arrowhead"/>
-          </marker>
-        </defs>
-
-        <rect x="0" y="35" width="140" height="62" rx="6" class="diagram-box"/>
-        <text x="70" y="20" text-anchor="middle" class="diagram-step">01</text>
-        <text x="70" y="62" text-anchor="middle" class="diagram-label">Ingest</text>
-        <text x="70" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">Zepp, Cal AI,</text>
-        <text x="70" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">Hevy</text>
-
-        <line x1="140" y1="66" x2="172" y2="66" class="diagram-arrow" marker-end="url(#arrowhead)"/>
-
-        <rect x="176" y="35" width="140" height="62" rx="6" class="diagram-box"/>
-        <text x="246" y="20" text-anchor="middle" class="diagram-step">02</text>
-        <text x="246" y="62" text-anchor="middle" class="diagram-label">Normalize</text>
-        <text x="246" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">SQLite</text>
-        <text x="246" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">daily_summary</text>
-
-        <line x1="316" y1="66" x2="348" y2="66" class="diagram-arrow" marker-end="url(#arrowhead)"/>
-
-        <rect x="352" y="35" width="140" height="62" rx="6" class="diagram-box"/>
-        <text x="422" y="20" text-anchor="middle" class="diagram-step">03</text>
-        <text x="422" y="62" text-anchor="middle" class="diagram-label">Engineer</text>
-        <text x="422" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">sleep debt,</text>
-        <text x="422" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">recovery, load</text>
-
-        <line x1="492" y1="66" x2="524" y2="66" class="diagram-arrow" marker-end="url(#arrowhead)"/>
-
-        <rect x="528" y="35" width="132" height="62" rx="6" class="diagram-box"/>
-        <text x="594" y="20" text-anchor="middle" class="diagram-step">04</text>
-        <text x="594" y="62" text-anchor="middle" class="diagram-label">Recommend</text>
-        <text x="594" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">features + goal</text>
-        <text x="594" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">&#8594; LLM</text>
-      </svg>
-    </div>
-    <p>Zepp and Cal AI both write into Apple Health, and Hevy connects through its own REST API, so three sources collapse into two integration points. Sleep, nutrition, and workout records join by calendar date into a single <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">daily_summary</code> table, the join hub everything downstream reads from. Raw numbers there become signals: sleep debt, a recovery score, training load change, per-muscle-group fatigue. Those signals, plus a free-text goal like "build muscle and lose fat," go to an LLM that reasons over both to produce a workout, a calorie target, and recovery guidance for the day.</p>
-  </section>
-
-  <section class="sec" id="install">
-    <p class="sec-num">03</p>
-    <h2>Installation &amp; Quick Start</h2>
-    <p>Triad ships as an installable Python package with a small public API. This is what running it actually looks like.</p>
-
-    <p class="code-label">Install</p>
-    <pre class="code-panel"><code class="language-bash">pip install triad</code></pre>
-
-    <p class="code-label">Usage</p>
-    <pre class="code-panel"><code class="language-python">import triad
-
-# 1. Initialize the database (run once)
-triad.setup()
-
-# 2. Create your profile
-triad.create_profile(
-    name="Jonathan",
-    age=24,
-    weight_lbs=178,
-    height_in=66,          # 5'6"
-    sex="male",
-    goal_text="build muscle and lose fat",
-    target_sleep_hrs=8.0,
-    activity_level="active"
-)
-
-# 3. Sync your data
-triad.sync(
-    hevy_api_key="your-hevy-api-key",
-    apple_health_path="path/to/export.xml",
-    calai_pdf_path="path/to/calai_summary.pdf"
-)
-
-# 4. Get today's recommendation
-triad.today()</code></pre>
-
-    <p class="code-label">Output</p>
-    <pre class="plain-panel">════════════════════════════════════════
-  TRIAD DAILY RECOMMENDATION
-════════════════════════════════════════
-
-WORKOUT: Lower Body Strength
-   Upper body is fatigued from yesterday's back session.
-   Legs are fresh, so today is the day for squats and deadlifts.
-
-CALORIES: 3200 kcal
-   Running a consistent deficit. Eat at maintenance today
-   to support recovery and fuel the leg session.
-
-PROTEIN: 178g target
-   Below target all week. Prioritize it today.
-
-RECOVERY: 8+ hours tonight
-   7-day sleep debt is at 12hrs; compounding fatigue will
-   limit strength gains if not addressed.
-
-FLAGS:
-   - Protein critically low: 102g avg vs 178g target this week
-   - Training load increased 110%, monitor for overreaching
-════════════════════════════════════════</pre>
-
-    <div class="chart-wrap">
-      <canvas id="proteinChart"></canvas>
-    </div>
-    <p class="chart-caption">7-day average protein intake vs. target, from the recommendation above</p>
-  </section>
-
-  <section class="sec" id="signals">
-    <p class="sec-num">04</p>
-    <h2>Signals</h2>
-    <p>The feature layer translates raw daily numbers into the signals the recommendation engine actually reasons over.</p>
-    <table class="feat-table">
-      <thead><tr><th>Feature</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>sleep_debt_7d</code></td><td>Cumulative sleep deficit over 7 days (hours)</td></tr>
-        <tr><td><code>recovery_score</code></td><td>0-100 weighted composite of deep/REM/core sleep quality</td></tr>
-        <tr><td><code>training_load_7d</code></td><td>Total volume lifted in the last 7 days (lbs)</td></tr>
-        <tr><td><code>load_change_pct</code></td><td>Week-over-week training load change (%)</td></tr>
-        <tr><td><code>caloric_deficit_3d</code></td><td>Average daily caloric deficit over 3 days</td></tr>
-        <tr><td><code>protein_avg_7d</code></td><td>Average daily protein intake over 7 days (g)</td></tr>
-        <tr><td><code>{muscle}_volume_48h</code></td><td>Per-muscle-group training volume in last 48 hours</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class="sec" id="built-with">
-    <p class="sec-num">05</p>
-    <h2>Built With</h2>
-    <p class="built-with">Python 3.11 and 3.12, <code>anthropic</code> for recommendation reasoning, <code>sqlite3</code> for local storage, the Hevy REST API for workout data, Apple HealthKit for sleep and nutrition, <code>pdfplumber</code> for Cal AI's PDF exports, and <code>pytest</code> for the test suite.</p>
-  </section>
-
-  <section class="sec" id="went">
-    <p class="sec-num">06</p>
-    <h2>Where This Went</h2>
-    <p>Triad started as a Python package: the data foundation. That package is now evolving into BodyByData, a full application built on top of it, where the package handles data normalization and feature engineering while the app adds the intelligence layer, daily recommendations, and a real interface people actually use.</p>
-    <a class="ref-link" href="#" data-placeholder="bodybydata-landing">
-      <span class="arrow">&#8594;</span> See BodyByData
-    </a>
-  </section>
-
-  <section class="sec" id="process">
-    <p class="sec-num">07</p>
-    <h2>Process</h2>
-    <p>Triad did not start with a spec. It started with a frustration, a fast prototype, and a lot of iteration with an AI assistant to get from a vague idea to a working recommendation engine. What made it a real engineering project rather than a one-off experiment was documenting every rejected approach, not just the one that worked.</p>
-    <p><strong>The scoping, May 28:</strong> settled on a single research question: can sleep quality and prior training load predict optimal daily workout type and caloric targets for an individual athlete? The name "triad" came from the three inputs: sleep, nutrition, training.</p>
-    <p><strong>A rejected prompt design:</strong> an early draft of the recommendation prompt injected raw numbers only (<code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">sleep_debt_7d: -30.78</code>), and the model's response was inconsistent since it had to judge severity itself. The fix was adding explicit severity labels before the numbers ever reached the model, which made outputs consistent instead of guesswork.</p>
-    <p><strong>A rejected data model:</strong> tried mapping goal text to fixed parameters. That broke immediately on real input like "build muscle but don't want to bulk too much." The fix: pass goal text verbatim into the prompt and let the model interpret it, since that's what it is actually good at.</p>
-    <p>Every one of those wrong first attempts is logged with a timestamp, not cleaned up after the fact.</p>
-    <div class="ref-stack">
-      <a class="ref-link" href="https://github.com/jonathanascona/triad-showcase/blob/main/devlog.md" target="_blank" rel="noopener">
-        <span class="arrow">&#8594;</span> Read the full dev log
-      </a>
-      <a class="ref-link" href="https://github.com/jonathanascona/triad-showcase/blob/main/prompt-journal.md" target="_blank" rel="noopener">
-        <span class="arrow">&#8594;</span> Read the full prompt engineering journal
-      </a>
-    </div>
-  </section>
-
   <section class="sec" id="design-process">
-    <p class="sec-num">08</p>
+    <p class="sec-num">02</p>
     <h2>Design Process</h2>
     <p>I was never trained to design software architecture. I have just always sketched systems out before writing any code, a habit that started well before I had a name for it. Triad's actual starting point was not a spec or a diagramming tool, it was a notebook.</p>
 
@@ -685,12 +523,57 @@ FLAGS:
     <p class="chart-caption">The full data model today: nine tables spanning raw ingestion and derived features, joined by date</p>
   </section>
 
+  <section class="sec" id="pipeline">
+    <p class="sec-num">03</p>
+    <h2>Pipeline</h2>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 660 130" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="diagram-arrowhead"/>
+          </marker>
+        </defs>
+
+        <rect x="0" y="35" width="140" height="62" rx="6" class="diagram-box"/>
+        <text x="70" y="20" text-anchor="middle" class="diagram-step">01</text>
+        <text x="70" y="62" text-anchor="middle" class="diagram-label">Ingest</text>
+        <text x="70" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">Zepp, Cal AI,</text>
+        <text x="70" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">Hevy</text>
+
+        <line x1="140" y1="66" x2="172" y2="66" class="diagram-arrow" marker-end="url(#arrowhead)"/>
+
+        <rect x="176" y="35" width="140" height="62" rx="6" class="diagram-box"/>
+        <text x="246" y="20" text-anchor="middle" class="diagram-step">02</text>
+        <text x="246" y="62" text-anchor="middle" class="diagram-label">Normalize</text>
+        <text x="246" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">SQLite</text>
+        <text x="246" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">daily_summary</text>
+
+        <line x1="316" y1="66" x2="348" y2="66" class="diagram-arrow" marker-end="url(#arrowhead)"/>
+
+        <rect x="352" y="35" width="140" height="62" rx="6" class="diagram-box"/>
+        <text x="422" y="20" text-anchor="middle" class="diagram-step">03</text>
+        <text x="422" y="62" text-anchor="middle" class="diagram-label">Engineer</text>
+        <text x="422" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">sleep debt,</text>
+        <text x="422" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">recovery, load</text>
+
+        <line x1="492" y1="66" x2="524" y2="66" class="diagram-arrow" marker-end="url(#arrowhead)"/>
+
+        <rect x="528" y="35" width="132" height="62" rx="6" class="diagram-box"/>
+        <text x="594" y="20" text-anchor="middle" class="diagram-step">04</text>
+        <text x="594" y="62" text-anchor="middle" class="diagram-label">Recommend</text>
+        <text x="594" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">features + goal</text>
+        <text x="594" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">&#8594; LLM</text>
+      </svg>
+    </div>
+    <p>Zepp and Cal AI both write into Apple Health, and Hevy connects through its own REST API, so three sources collapse into two integration points. Sleep, nutrition, and workout records join by calendar date into a single <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">daily_summary</code> table, the join hub everything downstream reads from. Raw numbers there become signals: sleep debt, a recovery score, training load change, per-muscle-group fatigue. Those signals, plus a free-text goal like "build muscle and lose fat," go to an LLM that reasons over both to produce a workout, a calorie target, and recovery guidance for the day.</p>
+  </section>
+
   <section class="sec" id="problems">
-    <p class="sec-num">09</p>
+    <p class="sec-num">04</p>
     <h2>Problems Encountered During Development</h2>
     <p>Not every problem here was a bug. Some were architectural questions written down in the notebook before a line of code existed. Two categories mattered most: getting three closed data sources to cooperate at all, and designing the package so a fourth source would not require starting over.</p>
 
-    <p class="sub-num">9.1</p>
+    <p class="sub-num">4.1</p>
     <h3>Data Wrangling</h3>
     <p>None of Triad's three data sources were built to talk to each other, and two of them were not built to talk to anything at all. Getting sleep, nutrition, and training into one table meant working around closed APIs and manual exports before a single feature could be engineered.</p>
 
@@ -706,13 +589,173 @@ FLAGS:
 
     <p>By the time all four fixes landed, <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">triad.db</code> held 4,584 sleep records, 167 workout sessions, 2,256 exercise sets, and a 271-row <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">daily_summary</code> table joining all three sources by date. That was the point the project stopped being a data problem and became a feature engineering one.</p>
 
-    <p class="sub-num">9.2</p>
+    <p class="sub-num">4.2</p>
     <h3>Extensibility</h3>
     <p>One of the first questions written down, before any of this existed, was how to support more than three sources. The original <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">ingest/</code> folder answered that question by not really answering it: one script per source, each tightly coupled to its own file format. Once Hevy, Apple Health, and Cal AI were all working, that folder was refactored into <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">connectors/</code>, a plug-in interface built around an abstract base class with <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">connect()</code>, <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">validate()</code>, and <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">pull()</code> methods, and a small set of standard output types every source has to return no matter what it looks like on the way in. Adding a future source, Whoop, Garmin, or Oura, is one new file that implements that interface, not a rewrite of the ingestion layer.</p>
   </section>
 
-  <section class="sec" id="skills">
+  <section class="sec" id="signals">
+    <p class="sec-num">05</p>
+    <h2>Signals</h2>
+    <p>The feature layer translates raw daily numbers into the signals the recommendation engine actually reasons over.</p>
+    <table class="feat-table">
+      <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>sleep_debt_7d</code></td><td>Cumulative sleep deficit over 7 days (hours)</td></tr>
+        <tr><td><code>recovery_score</code></td><td>0-100 weighted composite of deep/REM/core sleep quality</td></tr>
+        <tr><td><code>training_load_7d</code></td><td>Total volume lifted in the last 7 days (lbs)</td></tr>
+        <tr><td><code>load_change_pct</code></td><td>Week-over-week training load change (%)</td></tr>
+        <tr><td><code>caloric_deficit_3d</code></td><td>Average daily caloric deficit over 3 days</td></tr>
+        <tr><td><code>protein_avg_7d</code></td><td>Average daily protein intake over 7 days (g)</td></tr>
+        <tr><td><code>{muscle}_volume_48h</code></td><td>Per-muscle-group training volume in last 48 hours</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sec" id="formula">
+    <p class="sec-num">06</p>
+    <h2>The Formula</h2>
+    <p>The recommendation engine is not a black box guessing at good advice. Every signal it reasons from comes from a specific, disclosed formula below, and every one of those formulas or thresholds was chosen for a reason, not tuned arbitrarily.</p>
+
+    <p class="code-label">Calorie &amp; Protein Targets</p>
+    <pre class="code-panel"><code class="language-python">bmr = 10 * weight_kg + 6.25 * height_cm - 5 * age + (5 if male else -161)
+tdee = bmr * activity_multiplier   # 1.2 sedentary &#8594; 1.9 very active
+
+ratio = 1.0 if "muscle" in goal else 0.9 if "cut" in goal else 0.8
+protein_target = weight_lbs * ratio</code></pre>
+    <p>The calorie target uses the Mifflin-St Jeor equation, one of the most widely validated formulas for estimating resting metabolic rate, chosen over older formulas like Harris-Benedict for that reason. The protein ratio sits inside the commonly recommended 0.7 to 1g per pound of bodyweight range for people who train: higher when the goal is framed around building muscle, since more protein supports muscle repair during a surplus or recomposition, and slightly lower during a cut, since the priority shifts to preserving lean mass on fewer calories.</p>
+
+    <p class="code-label">Recovery Score</p>
+    <pre class="code-panel"><code class="language-python">STAGE_WEIGHTS = {"deep": 0.45, "rem": 0.35, "core": 0.20}
+IDEAL_MIN     = {"deep": 90,   "rem": 90,   "core": 240}
+
+score = sum(min(actual[s] / IDEAL_MIN[s], 1.0) * STAGE_WEIGHTS[s]
+            for s in STAGE_WEIGHTS) * 100
+
+if total_sleep_min &lt; 6 * 60:
+    score *= total_sleep_min / (8 * 60)   # duration penalty</code></pre>
+    <p>Deep sleep gets the highest weight because it drives the most physical restoration, growth hormone release and tissue repair. REM is close behind for cognitive and nervous system recovery. Core sleep is weighted lowest since it is necessary but the least restorative on its own. A night cannot score as excellent recovery on stage ratios alone if total sleep was still short, which is why a duration penalty kicks in below six hours regardless of how well those hours were distributed.</p>
+
+    <p class="code-label">Sleep Debt, Load, and Rolling Averages</p>
+    <p>Sleep debt is a simple rolling account: actual minutes slept minus target minutes, summed over 7 days and converted to hours. Training load is the total volume lifted over the same window, and load change compares that 7-day window against the prior one, a simplified version of the acute-versus-chronic load tracking coaches use to flag overreaching. Caloric deficit and protein average are both rolling averages against the user's target, counting only days that were actually logged, so a missed log entry does not silently drag the average toward zero.</p>
+
+    <p class="code-label">From Numbers to Words</p>
+    <p>Raw numbers never reach the LLM directly, only the labeled signals derived from them do. That is a deliberate choice: the model reasons over meaning, critical, moderate, good, rather than a raw float it would have to judge the severity of itself, which is exactly why the earlier rejected prompt design failed (see Process). The bands below are deliberately conservative, so a signal only reads as critical when a threshold is clearly and meaningfully crossed.</p>
+    <table class="feat-table">
+      <thead><tr><th>Signal</th><th>Bands</th><th>Why here</th></tr></thead>
+      <tbody>
+        <tr><td>Sleep debt</td><td>good &#8805;0h &#183; mild &lt;0h &#183; moderate &lt;-5h &#183; critical &lt;-10h</td><td>-10 hours over a week is more than a full missed night, worth flagging before it compounds</td></tr>
+        <tr><td>Recovery score</td><td>excellent &#8805;75 &#183; good &#8805;55 &#183; moderate &#8805;30 &#183; poor &lt;30</td><td>Bands track the same deep/REM weighting used to compute the score itself</td></tr>
+        <tr><td>Load change (7d vs. prior 7d)</td><td>stable &#183; +10% progressive &#183; +30% overreaching &#183; -20% deload</td><td>+30% in a week is a common red flag for overreaching in strength training</td></tr>
+        <tr><td>Protein vs. target</td><td>good &#8805;75% &#183; low &#8805;50% &#183; critical &lt;50%</td><td>Under half of target for a week is a real shortfall, not noise from one off day</td></tr>
+        <tr><td>Calories vs. target</td><td>on target &#183; mild deficit &lt;-200 &#183; large deficit &lt;-600 &#183; surplus &gt;400</td><td>A sustained 600cal/day deficit is large enough to affect training quality, not normal variance</td></tr>
+        <tr><td>Muscle volume (48h)</td><td>fresh &#183; moderate &gt;8,000lbs &#183; high &gt;15,000lbs</td><td>Picked from typical working-set volumes, high enough to flag real fatigue, not just a normal session</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sec" id="process">
+    <p class="sec-num">07</p>
+    <h2>Process</h2>
+    <p>Triad did not start with a spec. It started with a frustration, a fast prototype, and a lot of iteration with an AI assistant to get from a vague idea to a working recommendation engine. What made it a real engineering project rather than a one-off experiment was documenting every rejected approach, not just the one that worked.</p>
+    <p><strong>The scoping, May 28:</strong> settled on a single research question: can sleep quality and prior training load predict optimal daily workout type and caloric targets for an individual athlete? The name "triad" came from the three inputs: sleep, nutrition, training.</p>
+    <p><strong>A rejected prompt design:</strong> an early draft of the recommendation prompt injected raw numbers only (<code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">sleep_debt_7d: -30.78</code>), and the model's response was inconsistent since it had to judge severity itself. The fix was adding explicit severity labels before the numbers ever reached the model, which made outputs consistent instead of guesswork.</p>
+    <p><strong>A rejected data model:</strong> tried mapping goal text to fixed parameters. That broke immediately on real input like "build muscle but don't want to bulk too much." The fix: pass goal text verbatim into the prompt and let the model interpret it, since that's what it is actually good at.</p>
+    <p>Every one of those wrong first attempts is logged with a timestamp, not cleaned up after the fact.</p>
+    <div class="ref-stack">
+      <a class="ref-link" href="https://github.com/jonathanascona/triad-showcase/blob/main/devlog.md" target="_blank" rel="noopener">
+        <span class="arrow">&#8594;</span> Read the full dev log
+      </a>
+      <a class="ref-link" href="https://github.com/jonathanascona/triad-showcase/blob/main/prompt-journal.md" target="_blank" rel="noopener">
+        <span class="arrow">&#8594;</span> Read the full prompt engineering journal
+      </a>
+    </div>
+  </section>
+
+  <section class="sec" id="install">
+    <p class="sec-num">08</p>
+    <h2>Installation &amp; Quick Start</h2>
+    <p>Triad ships as an installable Python package with a small public API. This is what running it actually looks like.</p>
+
+    <p class="code-label">Install</p>
+    <pre class="code-panel"><code class="language-bash">pip install triad</code></pre>
+
+    <p class="code-label">Usage</p>
+    <pre class="code-panel"><code class="language-python">import triad
+
+# 1. Initialize the database (run once)
+triad.setup()
+
+# 2. Create your profile
+triad.create_profile(
+    name="Jonathan",
+    age=24,
+    weight_lbs=178,
+    height_in=66,          # 5'6"
+    sex="male",
+    goal_text="build muscle and lose fat",
+    target_sleep_hrs=8.0,
+    activity_level="active"
+)
+
+# 3. Sync your data
+triad.sync(
+    hevy_api_key="your-hevy-api-key",
+    apple_health_path="path/to/export.xml",
+    calai_pdf_path="path/to/calai_summary.pdf"
+)
+
+# 4. Get today's recommendation
+triad.today()</code></pre>
+
+    <p class="code-label">Output</p>
+    <pre class="plain-panel">════════════════════════════════════════
+  TRIAD DAILY RECOMMENDATION
+════════════════════════════════════════
+
+WORKOUT: Lower Body Strength
+   Upper body is fatigued from yesterday's back session.
+   Legs are fresh, so today is the day for squats and deadlifts.
+
+CALORIES: 3200 kcal
+   Running a consistent deficit. Eat at maintenance today
+   to support recovery and fuel the leg session.
+
+PROTEIN: 178g target
+   Below target all week. Prioritize it today.
+
+RECOVERY: 8+ hours tonight
+   7-day sleep debt is at 12hrs; compounding fatigue will
+   limit strength gains if not addressed.
+
+FLAGS:
+   - Protein critically low: 102g avg vs 178g target this week
+   - Training load increased 110%, monitor for overreaching
+════════════════════════════════════════</pre>
+
+    <div class="chart-wrap">
+      <canvas id="proteinChart"></canvas>
+    </div>
+    <p class="chart-caption">7-day average protein intake vs. target, from the recommendation above</p>
+  </section>
+
+  <section class="sec" id="built-with">
+    <p class="sec-num">09</p>
+    <h2>Built With</h2>
+    <p class="built-with">Python 3.11 and 3.12, <code>anthropic</code> for recommendation reasoning, <code>sqlite3</code> for local storage, the Hevy REST API for workout data, Apple HealthKit for sleep and nutrition, <code>pdfplumber</code> for Cal AI's PDF exports, and <code>pytest</code> for the test suite.</p>
+  </section>
+
+  <section class="sec" id="went">
     <p class="sec-num">10</p>
+    <h2>Where This Went</h2>
+    <p>Triad started as a Python package: the data foundation. That package is now evolving into BodyByData, a full application built on top of it, where the package handles data normalization and feature engineering while the app adds the intelligence layer, daily recommendations, and a real interface people actually use.</p>
+    <a class="ref-link" href="#" data-placeholder="bodybydata-landing">
+      <span class="arrow">&#8594;</span> See BodyByData
+    </a>
+  </section>
+
+  <section class="sec" id="skills">
+    <p class="sec-num">11</p>
     <h2>Skills Exercised</h2>
     <p>Triad was a data science senior project, but building it end to end pulled in work well outside a stats curriculum. Below is the specific skill work behind each part of the project, tied to what actually demonstrates it.</p>
     <table class="feat-table skills-table">
