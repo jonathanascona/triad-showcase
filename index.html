@@ -280,9 +280,55 @@
   @media (max-width: 560px) {
     .wordmark { font-size: 36px; }
   }
+
+  /* Section index (Quarto-style TOC) */
+  .toc {
+    position: fixed;
+    top: 70px;
+    right: 28px;
+    width: 148px;
+    font-family: var(--font-mono);
+  }
+  .toc .toc-label {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--text-dim);
+    opacity: .6;
+    margin: 0 0 8px;
+    padding-left: 11px;
+  }
+  .toc a {
+    display: block;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 3px 0 3px 10px;
+    border-left: 2px solid var(--border);
+    line-height: 1.5;
+    transition: color .15s ease, border-color .15s ease;
+  }
+  .toc a:hover, .toc a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+  }
+  @media (max-width: 1180px) {
+    .toc { display: none; }
+  }
 </style>
 </head>
 <body>
+
+<nav class="toc" aria-label="Section index">
+  <p class="toc-label">On This Page</p>
+  <a href="#problem">01 Problem</a>
+  <a href="#pipeline">02 Pipeline</a>
+  <a href="#install">03 Install</a>
+  <a href="#signals">04 Signals</a>
+  <a href="#built-with">05 Built With</a>
+  <a href="#went">06 Where This Went</a>
+</nav>
 
 <div class="shell">
 
@@ -295,13 +341,13 @@
     <p class="status-note">Public showcase page &middot; full package source is in a private repo during development</p>
   </div>
 
-  <section class="sec">
+  <section class="sec" id="problem">
     <p class="sec-num">01</p>
     <h2>The Problem</h2>
     <p class="lede-cap">Three things drive training results: sleep, nutrition, and training itself. Sleep governs recovery, hormone regulation, and muscle repair. Nutrition supplies the fuel for training and the protein for muscle synthesis. Training provides the stimulus that drives adaptation. When one of these is off, the others suffer, and every app on the market tracks only one of them in isolation. Triad pulls all three sources together and tells you, based on actual data, what your body needs today.</p>
   </section>
 
-  <section class="sec">
+  <section class="sec" id="pipeline">
     <p class="sec-num">02</p>
     <h2>Pipeline</h2>
     <div class="diagram-wrap">
@@ -346,7 +392,7 @@
     <p>Zepp and Cal AI both write into Apple Health, and Hevy connects through its own REST API, so three sources collapse into two integration points. Sleep, nutrition, and workout records join by calendar date into a single <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">daily_summary</code> table, the join hub everything downstream reads from. Raw numbers there become signals: sleep debt, a recovery score, training load change, per-muscle-group fatigue. Those signals, plus a free-text goal like "build muscle and lose fat," go to an LLM that reasons over both to produce a workout, a calorie target, and recovery guidance for the day.</p>
   </section>
 
-  <section class="sec">
+  <section class="sec" id="install">
     <p class="sec-num">03</p>
     <h2>Installation &amp; Quick Start</h2>
     <p>Triad ships as an installable Python package with a small public API. This is what running it actually looks like.</p>
@@ -413,7 +459,7 @@ FLAGS:
     <p class="chart-caption">7-day average protein intake vs. target, from the recommendation above</p>
   </section>
 
-  <section class="sec">
+  <section class="sec" id="signals">
     <p class="sec-num">04</p>
     <h2>Signals</h2>
     <p>The feature layer translates raw daily numbers into the signals the recommendation engine actually reasons over.</p>
@@ -431,13 +477,13 @@ FLAGS:
     </table>
   </section>
 
-  <section class="sec">
+  <section class="sec" id="built-with">
     <p class="sec-num">05</p>
     <h2>Built With</h2>
     <p class="built-with">Python 3.11 and 3.12, <code>anthropic</code> for recommendation reasoning, <code>sqlite3</code> for local storage, the Hevy REST API for workout data, Apple HealthKit for sleep and nutrition, <code>pdfplumber</code> for Cal AI's PDF exports, and <code>pytest</code> for the test suite.</p>
   </section>
 
-  <section class="sec">
+  <section class="sec" id="went">
     <p class="sec-num">06</p>
     <h2>Where This Went</h2>
     <p>Triad started as a Python package: the data foundation. That package is now evolving into BodyByData, a full application built on top of it, where the package handles data normalization and feature engineering while the app adds the intelligence layer, daily recommendations, and a real interface people actually use.</p>
@@ -509,6 +555,18 @@ FLAGS:
     root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
     renderProteinChart();
   });
+
+  const tocLinks = document.querySelectorAll('.toc a');
+  const tocSections = document.querySelectorAll('section.sec[id]');
+  const tocObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      tocLinks.forEach((l) => l.classList.remove('active'));
+      const active = document.querySelector('.toc a[href="#' + entry.target.id + '"]');
+      if (active) active.classList.add('active');
+    });
+  }, { rootMargin: '-15% 0px -70% 0px' });
+  tocSections.forEach((s) => tocObserver.observe(s));
 </script>
 
 </body>
