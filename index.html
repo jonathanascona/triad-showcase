@@ -4,285 +4,281 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>triad: a personal fitness intelligence pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/bash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <style>
   :root {
     --bg: #FFFFFF;
-    --surface: #FFFFFF;
     --surface-2: #F7F7F7;
     --text: #000000;
     --text-dim: #6E6E6E;
-    --border: #E5E5E5;
+    --border: #E2E2E2;
     --accent: #FF0000;
-    --accent-soft: #FFE5E5;
-    --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+    --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    --font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Consolas, monospace;
+    --font-ui: -apple-system, system-ui, sans-serif;
   }
   [data-theme="dark"] {
     --bg: #0A0A0A;
-    --surface: #141414;
-    --surface-2: #1B1B1B;
+    --surface-2: #161616;
     --text: #FFFFFF;
     --text-dim: #9A9A9A;
     --border: #2A2A2A;
     --accent: #FF3B30;
-    --accent-soft: #3A1414;
-    --shadow: 0 1px 2px rgba(0,0,0,0.4), 0 12px 32px rgba(0,0,0,0.45);
   }
   * { box-sizing: border-box; }
-  html { background: var(--bg); min-height: 100%; }
+  html { background: var(--bg); }
   body {
     margin: 0;
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, 'SF Pro Display', system-ui, sans-serif;
+    font-family: var(--font-serif);
     transition: background .3s ease, color .3s ease;
     min-height: 100vh;
     min-height: 100dvh;
   }
-  .shell { max-width: 760px; margin: 0 auto; padding: 56px 24px 64px; }
+  .shell { max-width: 660px; margin: 0 auto; padding: 60px 24px 70px; }
 
-  /* Header */
-  .head { text-align: center; margin-bottom: 40px; }
+  /* Masthead */
+  .masthead { text-align: center; padding-bottom: 26px; border-bottom: 1px solid var(--border); }
   .eyebrow {
-    font-size: 11px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
     letter-spacing: .12em;
     text-transform: uppercase;
     color: var(--accent);
     font-weight: 700;
-    margin: 0 0 6px;
+    margin: 0 0 7px;
   }
   .byline {
-    font-size: 13px;
-    color: var(--text-dim);
-    font-weight: 500;
-    margin: 0 0 4px;
-    letter-spacing: .01em;
-  }
-  .byline-name {
-    font-size: 12px;
-    color: var(--text);
-    opacity: .55;
-    font-weight: 400;
-    margin: 0 0 20px;
-    letter-spacing: .02em;
-  }
-  .logo-text {
-    font-weight: 700;
-    font-size: 40px;
-    letter-spacing: -0.02em;
-    margin: 0 0 10px;
-  }
-  .logo-text .mark { color: var(--accent); }
-  .head p.sub {
-    color: var(--text-dim);
-    font-size: 16px;
-    max-width: 480px;
-    margin: 0 auto;
-    line-height: 1.5;
-  }
-
-  /* Status note */
-  .status-note {
-    text-align: center;
+    font-family: var(--font-mono);
     font-size: 11.5px;
     color: var(--text-dim);
-    opacity: .7;
-    margin: 14px 0 40px;
+    font-weight: 500;
+    margin: 0 0 3px;
+  }
+  .byline-name {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text);
+    opacity: .55;
+    margin: 0 0 22px;
+  }
+  .wordmark {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-style: italic;
+    font-size: 46px;
+    letter-spacing: -0.01em;
+    margin: 0 0 10px;
+  }
+  .wordmark .mark { color: var(--accent); font-style: normal; }
+  .dek {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 16px;
+    max-width: 430px;
+    margin: 0 auto 14px;
     line-height: 1.5;
   }
-
-  /* Panels */
-  section.panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px 28px 30px;
-    margin-bottom: 20px;
-    box-shadow: var(--shadow);
+  .status-note {
+    font-family: var(--font-mono);
+    text-align: center;
+    font-size: 10.5px;
+    color: var(--text-dim);
+    opacity: .65;
+    margin: 0;
+    letter-spacing: .01em;
   }
-  section.panel h2 {
-    font-size: 20px;
+
+  /* Section scaffolding: no cards, numbered like a paper */
+  section.sec { padding: 40px 0; border-bottom: 1px solid var(--border); }
+  section.sec:last-of-type { border-bottom: none; }
+  .sec-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: .05em;
+    margin: 0 0 6px;
+  }
+  .sec h2 {
+    font-family: var(--font-serif);
+    font-size: 23px;
     font-weight: 700;
     letter-spacing: -0.01em;
-    margin: 0 0 8px;
+    margin: 0 0 16px;
   }
-  section.panel p.desc { color: var(--text-dim); font-size: 14px; margin: 0 0 20px; line-height: 1.5; }
-
-  /* Problem cards */
-  .problem-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .problem-card {
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 16px;
-    text-align: center;
+  .sec p {
+    font-size: 16px;
+    line-height: 1.68;
+    color: var(--text);
+    margin: 0 0 14px;
   }
-  .problem-card .icon {
-    width: 38px; height: 38px;
-    border-radius: 10px;
-    background: var(--accent-soft);
-    color: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 10px;
-  }
-  .problem-card .icon svg { width: 20px; height: 20px; }
-  .problem-card h3 { font-size: 14px; font-weight: 700; margin: 0 0 4px; }
-  .problem-card p { font-size: 12px; color: var(--text-dim); margin: 0; line-height: 1.4; }
-
-  /* Pipeline steps */
-  .pipeline { display: flex; flex-direction: column; gap: 0; }
-  .pipe-step {
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px 18px;
-    position: relative;
-  }
-  .pipe-step + .pipe-step { margin-top: 22px; }
-  .pipe-step .step-label {
-    font-size: 10px;
+  .sec p:last-child { margin-bottom: 0; }
+  .sec p.lede-cap::first-letter {
+    font-size: 2.6em;
     font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
+    float: left;
+    line-height: .85;
+    margin: 3px 6px 0 0;
     color: var(--accent);
-    margin: 0 0 4px;
   }
-  .pipe-step .step-title { font-size: 14px; font-weight: 700; margin: 0 0 4px; }
-  .pipe-step .step-detail { font-size: 12px; color: var(--text-dim); margin: 0; line-height: 1.5; }
-  .pipe-arrow {
-    display: flex; justify-content: center;
-    color: var(--border);
-    margin: -12px 0;
-    position: relative;
-    z-index: 1;
-  }
-  .pipe-arrow svg { width: 16px; height: 16px; }
 
-  /* Feature table */
-  table.feat-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  table.feat-table th {
-    text-align: left;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: .05em;
-    color: var(--text-dim);
-    font-weight: 700;
-    padding: 8px 10px;
-    border-bottom: 2px solid var(--border);
-  }
-  table.feat-table td {
-    padding: 10px 10px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
-  table.feat-table code {
-    background: var(--surface-2);
-    padding: 2px 6px;
-    border-radius: 5px;
-    font-size: 12px;
-  }
-  table.feat-table tr:last-child td { border-bottom: none; }
+  /* Pipeline diagram */
+  .diagram-wrap { margin: 22px 0 18px; }
+  .diagram-box { fill: var(--surface-2); stroke: var(--border); stroke-width: 1; }
+  .diagram-label { fill: var(--text); font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
+  .diagram-step { fill: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 700; }
+  .diagram-arrow { stroke: var(--border); stroke-width: 1.5; fill: none; }
+  .diagram-arrowhead { fill: var(--border); }
 
   /* Code panels */
   .code-label {
-    font-size: 11px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
     font-weight: 700;
     letter-spacing: .05em;
     text-transform: uppercase;
     color: var(--text-dim);
-    margin: 0 0 8px;
+    margin: 22px 0 8px;
   }
-  .code-label.spaced { margin-top: 22px; }
+  .code-label:first-of-type { margin-top: 4px; }
   pre.code-panel {
     background: #0d1117;
-    color: #e6edf3;
-    border-radius: 10px;
-    padding: 16px 18px;
-    font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
-    font-size: 12.5px;
+    border-radius: 8px;
+    padding: 15px 17px;
+    overflow-x: auto;
+    margin: 0;
+  }
+  pre.code-panel code {
+    font-family: var(--font-mono);
+    font-size: 12px;
     line-height: 1.65;
+    background: none;
+    padding: 0;
+  }
+  pre.plain-panel {
+    background: #0d1117;
+    color: #e6edf3;
+    border-radius: 8px;
+    padding: 15px 17px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.6;
     overflow-x: auto;
     margin: 0;
     white-space: pre;
   }
-  pre.code-panel .cm { color: #8b949e; }
 
-  /* Tech stack pills */
-  .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
-  .pill {
+  /* Chart */
+  .chart-wrap { margin-top: 20px; }
+  .chart-caption {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--text-dim);
+    text-align: center;
+    margin-top: 8px;
+    letter-spacing: .01em;
+  }
+
+  /* Feature table */
+  table.feat-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  table.feat-table th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--text-dim);
+    font-weight: 700;
+    padding: 0 10px 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  table.feat-table td {
+    padding: 10px 10px 10px 0;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    font-family: var(--font-serif);
+  }
+  table.feat-table code {
+    font-family: var(--font-mono);
     background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 7px 14px;
+    padding: 2px 6px;
+    border-radius: 4px;
     font-size: 12px;
-    font-weight: 600;
-    color: var(--text);
+  }
+  table.feat-table tr:last-child td { border-bottom: none; }
+
+  /* Built with */
+  .built-with { font-size: 16px; line-height: 1.68; }
+  .built-with code {
+    font-family: var(--font-mono);
+    background: var(--surface-2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 13px;
   }
 
-  /* CTA link card */
-  .cta-card {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: var(--text);
-    color: var(--bg);
-    border-radius: 16px;
-    padding: 22px 24px;
+  /* Reference link (was CTA card) */
+  .ref-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    color: var(--text);
     text-decoration: none;
-    margin-bottom: 20px;
-    transition: opacity .15s ease;
+    font-size: 16px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1px;
+    transition: border-color .15s ease, color .15s ease;
   }
-  .cta-card:hover { opacity: .88; }
-  .cta-card .cta-icon {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.12);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .cta-card .cta-icon svg { width: 20px; height: 20px; }
-  .cta-card .cta-title { font-size: 15px; font-weight: 700; margin: 0 0 2px; }
-  .cta-card .cta-desc { font-size: 12px; opacity: .7; margin: 0; }
+  .ref-link:hover { color: var(--accent); border-color: var(--accent); }
+  .ref-link .arrow { color: var(--accent); font-family: var(--font-mono); }
 
   /* Footer */
   footer {
     text-align: center;
-    margin-top: 36px;
-    font-size: 12px;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-  footer .footer-note {
-    display: inline-block;
-    margin-top: 4px;
+    margin-top: 40px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
     font-size: 11px;
-    opacity: .75;
+    color: var(--text-dim);
+    line-height: 1.7;
   }
+  footer .footer-note { display: inline-block; margin-top: 4px; font-size: 10px; opacity: .7; }
   .theme-toggle {
     position: relative;
     margin-top: 16px;
-    width: 46px; height: 26px;
+    width: 42px; height: 24px;
     border-radius: 999px;
     background: var(--border);
     border: none;
     cursor: pointer;
-    transition: background .25s ease;
   }
   .theme-toggle .knob {
     position: absolute;
     top: 3px; left: 3px;
-    width: 20px; height: 20px;
+    width: 18px; height: 18px;
     border-radius: 50%;
-    background: var(--surface);
+    background: var(--bg);
     box-shadow: 0 1px 3px rgba(0,0,0,0.3);
     transition: transform .25s ease;
     display: flex; align-items: center; justify-content: center;
     color: var(--text);
   }
-  .theme-toggle .knob svg { width: 12px; height: 12px; display: block; }
-  [data-theme="dark"] .theme-toggle .knob { transform: translateX(20px); }
+  .theme-toggle .knob svg { width: 11px; height: 11px; display: block; }
+  [data-theme="dark"] .theme-toggle .knob { transform: translateX(18px); }
 
   @media (max-width: 560px) {
-    .problem-row { grid-template-columns: 1fr; }
+    .wordmark { font-size: 36px; }
   }
 </style>
 </head>
@@ -290,137 +286,109 @@
 
 <div class="shell">
 
-  <div class="head">
+  <div class="masthead">
     <p class="eyebrow">Data Science Senior Project</p>
     <p class="byline">Brigham Young University&nbsp;-&nbsp;Idaho</p>
     <p class="byline-name">Jonathan Ascona</p>
-    <div class="logo-text"><span class="mark">△</span> triad</div>
-    <p class="sub">A personal fitness intelligence pipeline that unifies sleep, nutrition, and training data into one daily answer.</p>
-    <p class="status-note">Public showcase page &middot; full package source lives in a private repo during development</p>
+    <div class="wordmark"><span class="mark">△</span> triad</div>
+    <p class="dek">A personal fitness intelligence pipeline, built to unify sleep, nutrition, and training data into one daily answer.</p>
+    <p class="status-note">Public showcase page &middot; full package source is in a private repo during development</p>
   </div>
 
-  <section class="panel">
+  <section class="sec">
+    <p class="sec-num">01</p>
     <h2>The Problem</h2>
-    <p class="desc">Three things drive training results, and every app tracks only one of them in isolation.</p>
-    <div class="problem-row">
-      <div class="problem-card">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.2 14.6A8.6 8.6 0 1 1 9.4 3.8a7 7 0 0 0 10.8 10.8z"/></svg></div>
-        <h3>Sleep</h3>
-        <p>Recovery, hormone regulation, muscle repair</p>
-      </div>
-      <div class="problem-card">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8c-3.2 0-5.3 2.3-5.3 6.2 0 4.1 2.7 7.3 4.8 7.3 1 0 1.1-.5 2-.5s1 .5 2 .5c2.1 0 4.8-3.2 4.8-7.3 0-3.6-2.1-5.8-4.8-6.1"/><path d="M12 8c0-2.5 1.5-4.5 3.5-5"/></svg></div>
-        <h3>Nutrition</h3>
-        <p>Fuel for training, protein for muscle synthesis</p>
-      </div>
-      <div class="problem-card">
-        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 7v10"/><path d="M17.5 7v10"/><path d="M4 9v6"/><path d="M20 9v6"/><path d="M6.5 12h11"/></svg></div>
-        <h3>Training</h3>
-        <p>The stimulus that drives adaptation</p>
-      </div>
-    </div>
+    <p class="lede-cap">Three things drive training results: sleep, nutrition, and training itself. Sleep governs recovery, hormone regulation, and muscle repair. Nutrition supplies the fuel for training and the protein for muscle synthesis. Training provides the stimulus that drives adaptation. When one of these is off, the others suffer, and every app on the market tracks only one of them in isolation. Triad pulls all three sources together and tells you, based on actual data, what your body needs today.</p>
   </section>
 
-  <section class="panel">
-    <h2>How It Works</h2>
-    <p class="desc">Triad pulls all three sources together and tells you, based on your actual data, what your body needs today.</p>
-    <div class="pipeline">
-      <div class="pipe-step">
-        <p class="step-label">Step 1</p>
-        <p class="step-title">Ingest</p>
-        <p class="step-detail">Zepp/Amazfit and Cal AI both write into Apple Health; Hevy connects via its official REST API. Three sources collapse into two integration points.</p>
-      </div>
-      <div class="pipe-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg></div>
-      <div class="pipe-step">
-        <p class="step-label">Step 2</p>
-        <p class="step-title">Normalize</p>
-        <p class="step-detail">Sleep, nutrition, and workout records join by calendar date into a single <code style="background:var(--surface-2);padding:2px 6px;border-radius:5px;">daily_summary</code> table in SQLite: the join hub for everything downstream.</p>
-      </div>
-      <div class="pipe-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg></div>
-      <div class="pipe-step">
-        <p class="step-label">Step 3</p>
-        <p class="step-title">Engineer Features</p>
-        <p class="step-detail">Raw numbers become signals: sleep debt, recovery score, training load change, per-muscle-group fatigue.</p>
-      </div>
-      <div class="pipe-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg></div>
-      <div class="pipe-step">
-        <p class="step-label">Step 4</p>
-        <p class="step-title">Recommend</p>
-        <p class="step-detail">Computed features plus a free-text goal ("build muscle and lose fat") go to an LLM, which reasons over both to produce a workout, calorie target, and recovery guidance for the day.</p>
-      </div>
+  <section class="sec">
+    <p class="sec-num">02</p>
+    <h2>Pipeline</h2>
+    <div class="diagram-wrap">
+      <svg viewBox="0 0 660 130" xmlns="http://www.w3.org/2000/svg" width="100%">
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" class="diagram-arrowhead"/>
+          </marker>
+        </defs>
+
+        <rect x="0" y="35" width="140" height="62" rx="6" class="diagram-box"/>
+        <text x="70" y="20" text-anchor="middle" class="diagram-step">01</text>
+        <text x="70" y="62" text-anchor="middle" class="diagram-label">Ingest</text>
+        <text x="70" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">Zepp, Cal AI,</text>
+        <text x="70" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">Hevy</text>
+
+        <line x1="140" y1="66" x2="172" y2="66" class="diagram-arrow" marker-end="url(#arrowhead)"/>
+
+        <rect x="176" y="35" width="140" height="62" rx="6" class="diagram-box"/>
+        <text x="246" y="20" text-anchor="middle" class="diagram-step">02</text>
+        <text x="246" y="62" text-anchor="middle" class="diagram-label">Normalize</text>
+        <text x="246" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">SQLite</text>
+        <text x="246" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">daily_summary</text>
+
+        <line x1="316" y1="66" x2="348" y2="66" class="diagram-arrow" marker-end="url(#arrowhead)"/>
+
+        <rect x="352" y="35" width="140" height="62" rx="6" class="diagram-box"/>
+        <text x="422" y="20" text-anchor="middle" class="diagram-step">03</text>
+        <text x="422" y="62" text-anchor="middle" class="diagram-label">Engineer</text>
+        <text x="422" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">sleep debt,</text>
+        <text x="422" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">recovery, load</text>
+
+        <line x1="492" y1="66" x2="524" y2="66" class="diagram-arrow" marker-end="url(#arrowhead)"/>
+
+        <rect x="528" y="35" width="132" height="62" rx="6" class="diagram-box"/>
+        <text x="594" y="20" text-anchor="middle" class="diagram-step">04</text>
+        <text x="594" y="62" text-anchor="middle" class="diagram-label">Recommend</text>
+        <text x="594" y="80" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">features + goal</text>
+        <text x="594" y="92" text-anchor="middle" class="diagram-label" style="font-weight:400; font-size:10px; fill:var(--text-dim);">&#8594; LLM</text>
+      </svg>
     </div>
+    <p>Zepp and Cal AI both write into Apple Health, and Hevy connects through its own REST API, so three sources collapse into two integration points. Sleep, nutrition, and workout records join by calendar date into a single <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">daily_summary</code> table, the join hub everything downstream reads from. Raw numbers there become signals: sleep debt, a recovery score, training load change, per-muscle-group fatigue. Those signals, plus a free-text goal like "build muscle and lose fat," go to an LLM that reasons over both to produce a workout, a calorie target, and recovery guidance for the day.</p>
   </section>
 
-  <section class="panel">
+  <section class="sec">
+    <p class="sec-num">03</p>
     <h2>Installation &amp; Quick Start</h2>
-    <p class="desc">Triad ships as an installable Python package with a small public API. This is what running it actually looks like.</p>
+    <p>Triad ships as an installable Python package with a small public API. This is what running it actually looks like.</p>
 
     <p class="code-label">Install</p>
-    <pre class="code-panel">pip install triad</pre>
+    <pre class="code-panel"><code class="language-bash">pip install triad</code></pre>
 
-    <p class="code-label spaced">Usage</p>
-    <pre class="code-panel"><span class="cm">import triad
+    <p class="code-label">Usage</p>
+    <pre class="code-panel"><code class="language-python">import triad
 
-# 1. Initialize the database (run once)</span>
+# 1. Initialize the database (run once)
 triad.setup()
 
-<span class="cm"># 2. Create your profile</span>
+# 2. Create your profile
 triad.create_profile(
     name="Jonathan",
     age=24,
     weight_lbs=178,
-    height_in=66,          <span class="cm"># 5'6"</span>
+    height_in=66,          # 5'6"
     sex="male",
     goal_text="build muscle and lose fat",
     target_sleep_hrs=8.0,
     activity_level="active"
 )
-<span class="cm"># ✓ Profile saved
-# ✓ TDEE target:    3002 cal/day
-# ✓ Protein target: 178g/day</span>
 
-<span class="cm"># 3. Sync your data</span>
+# 3. Sync your data
 triad.sync(
     hevy_api_key="your-hevy-api-key",
     apple_health_path="path/to/export.xml",
     calai_pdf_path="path/to/calai_summary.pdf"
 )
 
-<span class="cm"># 4. Get today's recommendation</span>
-triad.today()</pre>
+# 4. Get today's recommendation
+triad.today()</code></pre>
 
-    <p class="code-label spaced">Output</p>
-    <pre class="code-panel">══════════════════════════════════════════════════
+    <p class="code-label">Output</p>
+    <pre class="plain-panel">════════════════════════════════════════
   TRIAD DAILY RECOMMENDATION
-══════════════════════════════════════════════════
+════════════════════════════════════════
 
-💪 WORKOUT: Lower Body Strength
-   Your upper body is fatigued from yesterday's back session.
-   Legs are fresh, so this is the right day for squats and deadlifts.
-   Target: legs, glutes
+WORKOUT: Lower Body Strength
+   Upper body is fatigued from yesterday's back session.
+   Legs are fresh, so today is the day for squats and deadlifts.
 
-🍽️  CALORIES: 3200 kcal
-   You've been running a consistent deficit. Eat at maintenance
-   today to support recovery and fuel the leg session.
-
-🥩 PROTEIN: 178g
-   Protein has been below target all week. Prioritize it today.
-
-😴 RECOVERY:
-   Aim for 8+ hours tonight. Your 7-day sleep debt is at 12hrs;
-   compounding fatigue will limit strength gains if not addressed.
-
-⚠️  FLAGS:
-   • Protein critically low: 102g avg vs 178g target this week
-   • Training load increased 110%, monitor for overreaching
-══════════════════════════════════════════════════</pre>
-  </section>
-
-  <section class="panel">
-    <h2>Feature Engineering</h2>
-    <p class="desc">The signals the recommendation engine actually reasons over.</p>
-    <table class="feat-table">
-      <thead><tr><th>Feature</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>sleep_debt_7d</code></td><td>Cumulative sleep deficit over 7 days (hours)</td></tr>
-        <tr><td><code>recovery_score</code></td><td>
+CALORIES:
