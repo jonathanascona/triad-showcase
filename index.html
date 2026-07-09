@@ -183,6 +183,8 @@
   .code-label:first-of-type { margin-top: 4px; }
   .citation { font-size: 15px; }
   .citation .cite-num { color: var(--accent); font-family: var(--font-mono); font-weight: 700; margin-right: 4px; }
+  a.cite-ref { font-family: var(--font-mono); color: var(--accent); font-weight: 700; font-size: 12px; text-decoration: none; margin-left: 1px; }
+  a.cite-ref:hover { text-decoration: underline; }
   .ai-note { font-size: 13px; font-style: italic; color: var(--text-dim); margin: 0 0 20px; }
   hr.subdivider {
     border: none;
@@ -429,7 +431,7 @@
     <h2>Design Process</h2>
     <p>I was never trained to design software architecture. I have just always sketched systems out before writing any code, a habit that started well before I had a name for it. Triad's actual starting point was not a spec or a diagramming tool, it was a notebook.</p>
 
-    <p>There is a practical case for sketching first, beyond habit. It gets an idea out of your head fast, before overthinking sets in. It forces a system to break into distinct, ordered sections instead of staying one vague blob, which looks a lot like how Agile breaks a project into small, sequenced pieces before anyone starts building. And it lets you see whether an architecture or an interface would actually work before a single line of code exists, which is a much cheaper place to catch a bad idea.</p>
+    <p>There is a practical case for sketching first, beyond habit. It gets an idea out of your head fast, before overthinking sets in. It forces a system to break into distinct, ordered sections instead of staying one vague blob, which looks a lot like how Agile breaks a project into small, sequenced pieces before anyone starts building<a class="cite-ref" href="#cite-4">[4]</a>. And it lets you see whether an architecture or an interface would actually work before a single line of code exists, which is a much cheaper place to catch a bad idea.</p>
 
     <p>It also does not require being at a desk. Some of these notes started on a phone, got expanded on an iPad as a passenger in a car, and were only unpacked properly once I sat down at a laptop. There are a hundred ways to plan and build fast, and none of them require waiting for the right setup.</p>
 
@@ -637,7 +639,7 @@ tdee = bmr * activity_multiplier   # 1.2 sedentary &#8594; 1.9 very active
 
 ratio = 1.0 if "muscle" in goal else 0.9 if "cut" in goal else 0.8
 protein_target = weight_lbs * ratio</code></pre>
-    <p>The calorie target uses the Mifflin-St Jeor equation, one of the most widely validated formulas for estimating resting metabolic rate, chosen over older formulas like Harris-Benedict for that reason. The protein ratio sits inside the commonly recommended 0.7 to 1g per pound of bodyweight range for people who train: higher when the goal is framed around building muscle, since more protein supports muscle repair during a surplus or recomposition, and slightly lower during a cut, since the priority shifts to preserving lean mass on fewer calories.</p>
+    <p>The calorie target uses the Mifflin-St Jeor equation<a class="cite-ref" href="#cite-1">[1]</a>, one of the most widely validated formulas for estimating resting metabolic rate, chosen over older formulas like Harris-Benedict for that reason. The protein ratio sits inside the commonly recommended 0.7 to 1g per pound of bodyweight range for people who train<a class="cite-ref" href="#cite-2">[2]</a>: higher when the goal is framed around building muscle, since more protein supports muscle repair during a surplus or recomposition, and slightly lower during a cut, since the priority shifts to preserving lean mass on fewer calories.</p>
 
     <p class="code-label">Recovery Score</p>
     <pre class="code-panel"><code class="language-python">STAGE_WEIGHTS = {"deep": 0.45, "rem": 0.35, "core": 0.20}
@@ -651,7 +653,7 @@ if total_sleep_min &lt; 6 * 60:
     <p>Deep sleep gets the highest weight because it drives the most physical restoration, growth hormone release and tissue repair. REM is close behind for cognitive and nervous system recovery. Core sleep is weighted lowest since it is necessary but the least restorative on its own. A night cannot score as excellent recovery on stage ratios alone if total sleep was still short, which is why a duration penalty kicks in below six hours regardless of how well those hours were distributed.</p>
 
     <p class="code-label">Sleep Debt, Load, and Rolling Averages</p>
-    <p>Sleep debt is a simple rolling account: actual minutes slept minus target minutes, summed over 7 days and converted to hours. Training load is the total volume lifted over the same window, and load change compares that 7-day window against the prior one, a simplified version of the acute-versus-chronic load tracking coaches use to flag overreaching. Caloric deficit and protein average are both rolling averages against the user's target, counting only days that were actually logged, so a missed log entry does not silently drag the average toward zero.</p>
+    <p>Sleep debt is a simple rolling account: actual minutes slept minus target minutes, summed over 7 days and converted to hours. Training load is the total volume lifted over the same window, and load change compares that 7-day window against the prior one, a simplified version of the acute-versus-chronic load tracking coaches use to flag overreaching<a class="cite-ref" href="#cite-3">[3]</a>. Caloric deficit and protein average are both rolling averages against the user's target, counting only days that were actually logged, so a missed log entry does not silently drag the average toward zero.</p>
 
     <p class="code-label">From Numbers to Words</p>
     <p>Raw numbers never reach the LLM directly, only the labeled signals derived from them do. That is a deliberate choice: the model reasons over meaning, critical, moderate, good, rather than a raw float it would have to judge the severity of itself, which is exactly why the earlier rejected prompt design failed (see Process). The bands below are deliberately conservative, so a signal only reads as critical when a threshold is clearly and meaningfully crossed.</p>
@@ -795,10 +797,10 @@ FLAGS:
     <p>This page documents original work, but it leans on outside research and tools throughout. Everything that was not built or written by me is credited here.</p>
 
     <p class="code-label">Research &amp; Methodology</p>
-    <p class="citation"><span class="cite-num">[1]</span>Mifflin MD, St Jeor ST, Hill LA, Scott BJ, Daugherty SA, Koh YO. "A New Predictive Equation for Resting Energy Expenditure in Healthy Individuals." <em>The American Journal of Clinical Nutrition</em>, 51(2), 241 to 247 (1990). The basis for the calorie-target formula in The Formula.</p>
-    <p class="citation"><span class="cite-num">[2]</span>J&auml;ger R, Kerksick CM, Campbell BI, et al. "International Society of Sports Nutrition Position Stand: Protein and Exercise." <em>Journal of the International Society of Sports Nutrition</em>, 14, 20 (2017). This position stand's own range is 1.4 to 2.0g per kg of bodyweight, roughly 0.64 to 0.91g per lb; Triad's targets in The Formula run slightly above that, at 0.8 to 1.0g per lb, in line with common practical guidance for people who lift.</p>
-    <p class="citation"><span class="cite-num">[3]</span>Gabbett TJ. "The Training-Injury Prevention Paradox: Should Athletes Be Training Smarter and Harder?" <em>British Journal of Sports Medicine</em>, 50(5), 273 to 280 (2016). The basis for treating a sharp week-over-week training load increase as an overreaching signal in The Formula and Problems Encountered.</p>
-    <p class="citation"><span class="cite-num">[4]</span>Beck K, Beedle M, van Bennekum A, et al. "Manifesto for Agile Software Development." agilemanifesto.org (2001). Referenced in Design Process when describing why sketching a system into small, ordered pieces before building it works.</p>
+    <p class="citation" id="cite-1"><span class="cite-num">[1]</span>Mifflin MD, St Jeor ST, Hill LA, Scott BJ, Daugherty SA, Koh YO. "A New Predictive Equation for Resting Energy Expenditure in Healthy Individuals." <em>The American Journal of Clinical Nutrition</em>, 51(2), 241 to 247 (1990). The basis for the calorie-target formula in The Formula.</p>
+    <p class="citation" id="cite-2"><span class="cite-num">[2]</span>J&auml;ger R, Kerksick CM, Campbell BI, et al. "International Society of Sports Nutrition Position Stand: Protein and Exercise." <em>Journal of the International Society of Sports Nutrition</em>, 14, 20 (2017). This position stand's own range is 1.4 to 2.0g per kg of bodyweight, roughly 0.64 to 0.91g per lb; Triad's targets in The Formula run slightly above that, at 0.8 to 1.0g per lb, in line with common practical guidance for people who lift.</p>
+    <p class="citation" id="cite-3"><span class="cite-num">[3]</span>Gabbett TJ. "The Training-Injury Prevention Paradox: Should Athletes Be Training Smarter and Harder?" <em>British Journal of Sports Medicine</em>, 50(5), 273 to 280 (2016). The basis for treating a sharp week-over-week training load increase as an overreaching signal in The Formula and Problems Encountered.</p>
+    <p class="citation" id="cite-4"><span class="cite-num">[4]</span>Beck K, Beedle M, van Bennekum A, et al. "Manifesto for Agile Software Development." agilemanifesto.org (2001). Referenced in Design Process when describing why sketching a system into small, ordered pieces before building it works.</p>
 
     <p class="code-label">Tools, Libraries &amp; Services</p>
     <p>Anthropic Claude API (recommendation reasoning inside the package) &middot; Hevy (workout data API) &middot; Apple HealthKit and Health Auto Export (sleep and nutrition bridge) &middot; SQLite (local data store) &middot; pdfplumber (Cal AI PDF parsing) &middot; pytest (test suite) &middot; Chart.js (the data chart on this page) &middot; highlight.js (syntax highlighting on this page) &middot; Google Fonts, Source Serif 4 and JetBrains Mono (typography) &middot; Concepts, Canva, and Figma (early sketches and mockups) &middot; GitHub Pages (hosting this page)</p>
