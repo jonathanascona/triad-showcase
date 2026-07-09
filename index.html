@@ -98,6 +98,16 @@
     margin: 0;
     letter-spacing: .01em;
   }
+  .pip-warning {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--text-dim);
+    background: var(--surface-2);
+    border-left: 2px solid var(--accent);
+    padding: 10px 14px;
+    margin: 0 0 20px;
+  }
 
   /* Section scaffolding: no cards, numbered like a paper */
   section.sec { padding: 40px 0; border-bottom: 1px solid var(--border); }
@@ -678,10 +688,11 @@ if total_sleep_min &lt; 6 * 60:
   <section class="sec" id="install">
     <p class="sec-num">08</p>
     <h2>Installation &amp; Quick Start</h2>
-    <p>Triad ships as an installable Python package with a small public API. This is what running it actually looks like.</p>
+    <p>Triad is built as an installable Python package with a small public API. The walkthrough below shows what using it looks like end to end, illustrating the design, not a command you can actually run right now.</p>
 
     <p class="code-label">Install</p>
     <pre class="code-panel"><code class="language-bash">pip install triad</code></pre>
+    <p class="pip-warning">This will not work if you run it. The core package is private during development (see Problems Encountered), and the name <code style="font-family:var(--font-mono);background:var(--bg);padding:1px 5px;border-radius:3px;">triad</code> is already taken on PyPI by an unrelated project, so this command would silently install something else, not this one. It is shown here to illustrate the intended public API, nothing more.</p>
 
     <p class="code-label">Usage</p>
     <pre class="code-panel"><code class="language-python">import triad
