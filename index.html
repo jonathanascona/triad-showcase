@@ -124,6 +124,23 @@
     margin: 0 0 14px;
   }
   .sec p:last-child { margin-bottom: 0; }
+  .sub-num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: .05em;
+    opacity: .85;
+    margin: 30px 0 4px;
+  }
+  .sub-num:first-of-type { margin-top: 4px; }
+  .sec h3 {
+    font-family: var(--font-serif);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+  }
   .sec p.lede-cap::first-letter {
     font-size: 2.6em;
     font-weight: 700;
@@ -370,7 +387,7 @@
   <a href="#went">06 Where This Went</a>
   <a href="#process">07 Process</a>
   <a href="#design-process">08 Design Process</a>
-  <a href="#data-wrangling">09 Data Wrangling</a>
+  <a href="#problems">09 Problems Encountered</a>
   <a href="#skills">10 Skills Exercised</a>
 </nav>
 
@@ -667,20 +684,30 @@ FLAGS:
     <p class="chart-caption">The full data model today: nine tables spanning raw ingestion and derived features, joined by date</p>
   </section>
 
-  <section class="sec" id="data-wrangling">
+  <section class="sec" id="problems">
     <p class="sec-num">09</p>
-    <h2>Data Wrangling</h2>
+    <h2>Problems Encountered During Development</h2>
+    <p>Not every problem here was a bug. Some were architectural questions written down in the notebook before a line of code existed. Two categories mattered most: getting three closed data sources to cooperate at all, and designing the package so a fourth source would not require starting over.</p>
+
+    <p class="sub-num">9.1</p>
+    <h3>Data Wrangling</h3>
     <p>None of Triad's three data sources were built to talk to each other, and two of them were not built to talk to anything at all. Getting sleep, nutrition, and training into one table meant working around closed APIs and manual exports before a single feature could be engineered.</p>
 
-    <p><strong>Cal AI had no way out:</strong> its public developer API only supports food scanning, not retrieving personal meal history. The original plan was to fall back on Apple Health, since Cal AI does write there, but it turned out to only write water logs and a single body-mass reading, zero calories or macros. The PDF summary report was not a backup plan, it was the only nutrition path, parsed with <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">pdfplumber</code> and a regex built specifically for its row format.</p>
+    <p><strong>Cal AI had no way out:</strong> its public developer API only supports food scanning, not retrieving personal meal history. The original plan was to fall back on Apple Health, since Cal AI does write there, but it turned out to only write water logs and a single body-mass reading, zero calories or macros. The PDF summary report was not a backup plan, it was the only nutrition path, parsed with <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">pdfplumber</code> and a regex built specifically for its row format. That parser is the entire reason nutrition data exists in the database at all.</p>
 
-    <p><strong>Zepp does not have a public API:</strong> reverse-engineered ones exist but are fragile enough to avoid. Zepp already syncs sleep data to Apple Health natively, so Apple Health became the bridge instead of the source.</p>
+    <p><strong>Zepp does not have a public API:</strong> reverse-engineered ones exist but are fragile enough to avoid. Zepp already syncs sleep data to Apple Health natively, so Apple Health became the bridge instead of the source, and that one decision is the reason sleep data made it into <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">triad.db</code> without reverse-engineering anything.</p>
 
-    <p><strong>Hevy had a working API, and it still did not help:</strong> the sandbox used to build the ingestion script could not reach outside network calls at all. The fallback was Hevy's CSV export, which meant reconstructing 167 full workout sessions out of 2,308 flat, one-row-per-set rows by grouping on workout title and start time.</p>
+    <p><strong>Hevy had a working API, and it still did not help:</strong> the sandbox used to build the ingestion script could not reach outside network calls at all. The fallback was Hevy's CSV export, which meant reconstructing 167 full workout sessions out of 2,308 flat, one-row-per-set rows by grouping on workout title and start time. That reconstruction is what <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">workout_sessions</code> and <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">exercise_sets</code> are actually built from today.</p>
 
-    <p><strong>Apple Health's own export nearly broke the parser:</strong> a single XML file, 314MB, too large to load into memory in one pass. The fix was rewriting the parser around streaming <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">iterparse()</code> with an explicit element clear after every record, so memory stayed flat no matter the file size.</p>
+    <p><strong>Apple Health's own export nearly broke the parser:</strong> a single XML file, 314MB, too large to load into memory in one pass. The fix was rewriting the parser around streaming <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">iterparse()</code> with an explicit element clear after every record, so memory stayed flat no matter the file size. That fix is what made automated ingestion possible instead of a one-time manual import.</p>
 
-    <p>The most expensive problem was not technical. After joining all three sources by date, only 4 days had sleep, nutrition, and training data at once, nowhere near enough to build anything on. The root cause was a nutrition app that had stopped being used months before the project started. Once the Cal AI PDF parser was working, that number went from 4 complete days to 15.</p>
+    <p>The most expensive problem was not technical. After joining all three sources by date, only 4 days had sleep, nutrition, and training data at once, nowhere near enough to build anything on. The root cause was a nutrition app that had stopped being used months before the project started. Once the Cal AI PDF parser was working, that number went from 4 complete days to 15, enough to justify moving forward with a hybrid statistics-plus-LLM approach instead of waiting on data that was never going to arrive on its own.</p>
+
+    <p>By the time all four fixes landed, <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">triad.db</code> held 4,584 sleep records, 167 workout sessions, 2,256 exercise sets, and a 271-row <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">daily_summary</code> table joining all three sources by date. That was the point the project stopped being a data problem and became a feature engineering one.</p>
+
+    <p class="sub-num">9.2</p>
+    <h3>Extensibility</h3>
+    <p>One of the first questions written down, before any of this existed, was how to support more than three sources. The original <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">ingest/</code> folder answered that question by not really answering it: one script per source, each tightly coupled to its own file format. Once Hevy, Apple Health, and Cal AI were all working, that folder was refactored into <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">connectors/</code>, a plug-in interface built around an abstract base class with <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">connect()</code>, <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">validate()</code>, and <code style="font-family:var(--font-mono);background:var(--surface-2);padding:2px 6px;border-radius:4px;font-size:13px;">pull()</code> methods, and a small set of standard output types every source has to return no matter what it looks like on the way in. Adding a future source, Whoop, Garmin, or Oura, is one new file that implements that interface, not a rewrite of the ingestion layer.</p>
   </section>
 
   <section class="sec" id="skills">
