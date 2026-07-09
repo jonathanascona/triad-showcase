@@ -48,7 +48,22 @@
     text-transform: uppercase;
     color: var(--accent);
     font-weight: 700;
-    margin: 0 0 10px;
+    margin: 0 0 6px;
+  }
+  .byline {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-weight: 500;
+    margin: 0 0 4px;
+    letter-spacing: .01em;
+  }
+  .byline-name {
+    font-size: 12px;
+    color: var(--text);
+    opacity: .55;
+    font-weight: 400;
+    margin: 0 0 20px;
+    letter-spacing: .02em;
   }
   .logo-text {
     font-weight: 700;
@@ -259,7 +274,9 @@
 <div class="shell">
 
   <div class="head">
-    <p class="eyebrow">BYU-Idaho Data Science Senior Project</p>
+    <p class="eyebrow">Data Science Senior Project</p>
+    <p class="byline">Brigham Young University&nbsp;-&nbsp;Idaho</p>
+    <p class="byline-name">Jonathan Ascona</p>
     <div class="logo-text"><span class="mark">△</span> triad</div>
     <p class="sub">A personal fitness intelligence pipeline — unifying sleep, nutrition, and training data into one daily answer.</p>
   </div>
@@ -365,19 +382,4 @@
     <span class="footer-note">This page documents the project. Core source is private during development.</span>
     <br>
     <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-      <span class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg></span>
-    </button>
-  </footer>
-
-</div>
-
-<script>
-  const toggle = document.getElementById('themeToggle');
-  const root = document.documentElement;
-  toggle.addEventListener('click', () => {
-    root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-  });
-</script>
-
-</body>
-</html>
+      <span class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="4.2" y1="
