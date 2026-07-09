@@ -154,6 +154,12 @@
     margin: 22px 0 8px;
   }
   .code-label:first-of-type { margin-top: 4px; }
+  hr.subdivider {
+    border: none;
+    border-top: 1px solid var(--border);
+    opacity: .6;
+    margin: 34px 0 0;
+  }
   pre.code-panel {
     background: #0d1117;
     border-radius: 8px;
@@ -563,12 +569,14 @@ FLAGS:
 
     <p>Two of those questions ended up mattering more than the rest. Asking what makes a package useful and relevant led directly to treating documentation as part of the deliverable rather than an afterthought, the same instinct behind the dev log and prompt journal linked in Process. Asking how to prove the package works beyond just personal use is still an open question, and it is the honest limitation of building on a single-user dataset.</p>
 
+    <hr class="subdivider">
     <p class="code-label">Architecture Sketch &#8594; Pipeline</p>
     <img class="process-img" src="process/erd-sketch.png" alt="Early sketch of the Triad data architecture">
     <p class="chart-caption">The first pass at the data flow, sketched before a single table existed</p>
 
     <p>This sketch is the direct ancestor of the pipeline diagram in Pipeline. The four stages, ingest, database, feature engineering, and recommendation, never actually changed between this drawing and the finished package. What changed was everything underneath each box.</p>
 
+    <hr class="subdivider">
     <p class="code-label">UI Wireframe &#8594; BodyByData</p>
     <img class="process-img" src="process/ui-wireframe.png" alt="Early hand-drawn wireframe of the BodyByData interface">
     <p class="chart-caption">The first wireframe of the app Triad's data would eventually power</p>
@@ -578,6 +586,7 @@ FLAGS:
       <span class="arrow">&#8594;</span> See BodyByData
     </a>
 
+    <hr class="subdivider">
     <p class="code-label">The Finished Schema</p>
     <div class="diagram-wrap">
       <svg viewBox="0 0 660 300" xmlns="http://www.w3.org/2000/svg" width="100%">
