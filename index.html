@@ -179,7 +179,7 @@
   }
 
   /* Chart */
-  .chart-wrap { margin-top: 20px; }
+  .chart-wrap { margin-top: 20px; position: relative; height: 150px; width: 100%; }
   .chart-caption {
     font-family: var(--font-mono);
     font-size: 10.5px;
@@ -408,9 +408,9 @@ FLAGS:
 ════════════════════════════════════════</pre>
 
     <div class="chart-wrap">
-      <canvas id="proteinChart" height="150"></canvas>
-      <p class="chart-caption">7-day average protein intake vs. target, from the recommendation above</p>
+      <canvas id="proteinChart"></canvas>
     </div>
+    <p class="chart-caption">7-day average protein intake vs. target, from the recommendation above</p>
   </section>
 
   <section class="sec">
