@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>triad — a personal fitness intelligence pipeline</title>
+<title>triad: a personal fitness intelligence pipeline</title>
 <style>
   :root {
     --bg: #FFFFFF;
@@ -295,13 +295,13 @@
     <p class="byline">Brigham Young University&nbsp;-&nbsp;Idaho</p>
     <p class="byline-name">Jonathan Ascona</p>
     <div class="logo-text"><span class="mark">△</span> triad</div>
-    <p class="sub">A personal fitness intelligence pipeline — unifying sleep, nutrition, and training data into one daily answer.</p>
+    <p class="sub">A personal fitness intelligence pipeline that unifies sleep, nutrition, and training data into one daily answer.</p>
     <p class="status-note">Public showcase page &middot; full package source lives in a private repo during development</p>
   </div>
 
   <section class="panel">
     <h2>The Problem</h2>
-    <p class="desc">Three things drive training results — and every app tracks only one of them in isolation.</p>
+    <p class="desc">Three things drive training results, and every app tracks only one of them in isolation.</p>
     <div class="problem-row">
       <div class="problem-card">
         <div class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.2 14.6A8.6 8.6 0 1 1 9.4 3.8a7 7 0 0 0 10.8 10.8z"/></svg></div>
@@ -323,7 +323,7 @@
 
   <section class="panel">
     <h2>How It Works</h2>
-    <p class="desc">Triad pulls all three sources together and tells you — based on your actual data — what your body needs today.</p>
+    <p class="desc">Triad pulls all three sources together and tells you, based on your actual data, what your body needs today.</p>
     <div class="pipeline">
       <div class="pipe-step">
         <p class="step-label">Step 1</p>
@@ -334,7 +334,7 @@
       <div class="pipe-step">
         <p class="step-label">Step 2</p>
         <p class="step-title">Normalize</p>
-        <p class="step-detail">Sleep, nutrition, and workout records join by calendar date into a single <code style="background:var(--surface-2);padding:2px 6px;border-radius:5px;">daily_summary</code> table in SQLite — the join hub for everything downstream.</p>
+        <p class="step-detail">Sleep, nutrition, and workout records join by calendar date into a single <code style="background:var(--surface-2);padding:2px 6px;border-radius:5px;">daily_summary</code> table in SQLite: the join hub for everything downstream.</p>
       </div>
       <div class="pipe-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M6 13l6 6 6-6"/></svg></div>
       <div class="pipe-step">
@@ -396,7 +396,7 @@ triad.today()</pre>
 
 💪 WORKOUT: Lower Body Strength
    Your upper body is fatigued from yesterday's back session.
-   Legs are fresh — this is the right day for squats and deadlifts.
+   Legs are fresh, so this is the right day for squats and deadlifts.
    Target: legs, glutes
 
 🍽️  CALORIES: 3200 kcal
@@ -407,12 +407,12 @@ triad.today()</pre>
    Protein has been below target all week. Prioritize it today.
 
 😴 RECOVERY:
-   Aim for 8+ hours tonight. Your 7-day sleep debt is at 12hrs —
+   Aim for 8+ hours tonight. Your 7-day sleep debt is at 12hrs;
    compounding fatigue will limit strength gains if not addressed.
 
 ⚠️  FLAGS:
    • Protein critically low: 102g avg vs 178g target this week
-   • Training load increased 110% — monitor for overreaching
+   • Training load increased 110%, monitor for overreaching
 ══════════════════════════════════════════════════</pre>
   </section>
 
@@ -423,4 +423,4 @@ triad.today()</pre>
       <thead><tr><th>Feature</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td><code>sleep_debt_7d</code></td><td>Cumulative sleep deficit over 7 days (hours)</td></tr>
-        <tr><td><code>recovery_
+        <tr><td><code>recovery_score</code></td><td>
