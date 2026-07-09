@@ -80,22 +80,15 @@
     line-height: 1.5;
   }
 
-  /* Status banner */
-  .status-banner {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    background: var(--accent-soft);
-    border: 1px solid var(--accent);
-    border-radius: 14px;
-    padding: 16px 18px;
-    margin-bottom: 40px;
-    font-size: 13px;
+  /* Status note */
+  .status-note {
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-dim);
+    opacity: .7;
+    margin: 14px 0 40px;
     line-height: 1.5;
-    color: var(--text);
   }
-  .status-banner svg { flex-shrink: 0; width: 18px; height: 18px; color: var(--accent); margin-top: 1px; }
-  .status-banner strong { color: var(--accent); }
 
   /* Panels */
   section.panel {
@@ -189,6 +182,30 @@
   }
   table.feat-table tr:last-child td { border-bottom: none; }
 
+  /* Code panels */
+  .code-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin: 0 0 8px;
+  }
+  .code-label.spaced { margin-top: 22px; }
+  pre.code-panel {
+    background: #0d1117;
+    color: #e6edf3;
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12.5px;
+    line-height: 1.65;
+    overflow-x: auto;
+    margin: 0;
+    white-space: pre;
+  }
+  pre.code-panel .cm { color: #8b949e; }
+
   /* Tech stack pills */
   .pill-row { display: flex; flex-wrap: wrap; gap: 8px; }
   .pill {
@@ -279,11 +296,7 @@
     <p class="byline-name">Jonathan Ascona</p>
     <div class="logo-text"><span class="mark">△</span> triad</div>
     <p class="sub">A personal fitness intelligence pipeline — unifying sleep, nutrition, and training data into one daily answer.</p>
-  </div>
-
-  <div class="status-banner">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
-    <div><strong>This is a public showcase.</strong> The full triad source lives in a private repository during active development. This page documents the problem, architecture, and reasoning behind the project. Reach out if you'd like the actual code reviewed.</div>
+    <p class="status-note">Public showcase page &middot; full package source lives in a private repo during development</p>
   </div>
 
   <section class="panel">
@@ -339,47 +352,75 @@
   </section>
 
   <section class="panel">
+    <h2>Installation &amp; Quick Start</h2>
+    <p class="desc">Triad ships as an installable Python package with a small public API. This is what running it actually looks like.</p>
+
+    <p class="code-label">Install</p>
+    <pre class="code-panel">pip install triad</pre>
+
+    <p class="code-label spaced">Usage</p>
+    <pre class="code-panel"><span class="cm">import triad
+
+# 1. Initialize the database (run once)</span>
+triad.setup()
+
+<span class="cm"># 2. Create your profile</span>
+triad.create_profile(
+    name="Jonathan",
+    age=24,
+    weight_lbs=178,
+    height_in=66,          <span class="cm"># 5'6"</span>
+    sex="male",
+    goal_text="build muscle and lose fat",
+    target_sleep_hrs=8.0,
+    activity_level="active"
+)
+<span class="cm"># ✓ Profile saved
+# ✓ TDEE target:    3002 cal/day
+# ✓ Protein target: 178g/day</span>
+
+<span class="cm"># 3. Sync your data</span>
+triad.sync(
+    hevy_api_key="your-hevy-api-key",
+    apple_health_path="path/to/export.xml",
+    calai_pdf_path="path/to/calai_summary.pdf"
+)
+
+<span class="cm"># 4. Get today's recommendation</span>
+triad.today()</pre>
+
+    <p class="code-label spaced">Output</p>
+    <pre class="code-panel">══════════════════════════════════════════════════
+  TRIAD DAILY RECOMMENDATION
+══════════════════════════════════════════════════
+
+💪 WORKOUT: Lower Body Strength
+   Your upper body is fatigued from yesterday's back session.
+   Legs are fresh — this is the right day for squats and deadlifts.
+   Target: legs, glutes
+
+🍽️  CALORIES: 3200 kcal
+   You've been running a consistent deficit. Eat at maintenance
+   today to support recovery and fuel the leg session.
+
+🥩 PROTEIN: 178g
+   Protein has been below target all week. Prioritize it today.
+
+😴 RECOVERY:
+   Aim for 8+ hours tonight. Your 7-day sleep debt is at 12hrs —
+   compounding fatigue will limit strength gains if not addressed.
+
+⚠️  FLAGS:
+   • Protein critically low: 102g avg vs 178g target this week
+   • Training load increased 110% — monitor for overreaching
+══════════════════════════════════════════════════</pre>
+  </section>
+
+  <section class="panel">
     <h2>Feature Engineering</h2>
     <p class="desc">The signals the recommendation engine actually reasons over.</p>
     <table class="feat-table">
       <thead><tr><th>Feature</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td><code>sleep_debt_7d</code></td><td>Cumulative sleep deficit over 7 days (hours)</td></tr>
-        <tr><td><code>recovery_score</code></td><td>0–100 weighted composite of deep/REM/core sleep quality</td></tr>
-        <tr><td><code>training_load_7d</code></td><td>Total volume lifted in the last 7 days (lbs)</td></tr>
-        <tr><td><code>load_change_pct</code></td><td>Week-over-week training load change (%)</td></tr>
-        <tr><td><code>caloric_deficit_3d</code></td><td>Average daily caloric deficit over 3 days</td></tr>
-        <tr><td><code>protein_avg_7d</code></td><td>Average daily protein intake over 7 days (g)</td></tr>
-        <tr><td><code>{muscle}_volume_48h</code></td><td>Per-muscle-group training volume in last 48 hours</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <section class="panel">
-    <h2>Built With</h2>
-    <div class="pill-row">
-      <span class="pill">Python 3.11 / 3.12</span>
-      <span class="pill">Anthropic Claude</span>
-      <span class="pill">SQLite</span>
-      <span class="pill">Hevy API</span>
-      <span class="pill">Apple HealthKit</span>
-      <span class="pill">pdfplumber</span>
-      <span class="pill">pytest</span>
-    </div>
-  </section>
-
-  <a class="cta-card" href="#" data-placeholder="bodybydata-landing">
-    <div class="cta-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v14"/><path d="M2 19h20"/><path d="M9 9l3 3-3 3"/></svg></div>
-    <div>
-      <p class="cta-title">See where this went &rarr;</p>
-      <p class="cta-desc">Triad's package is now the data foundation for BodyByData</p>
-    </div>
-  </a>
-
-  <footer>
-    Jonathan Ascona &middot; BYU-Idaho Data Science &middot; &copy; 2026
-    <br>
-    <span class="footer-note">This page documents the project. Core source is private during development.</span>
-    <br>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-      <span class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="4.2" y1="
+        <tr><td><code>recovery_
