@@ -391,4 +391,125 @@ WORKOUT: Lower Body Strength
    Upper body is fatigued from yesterday's back session.
    Legs are fresh, so today is the day for squats and deadlifts.
 
-CALORIES:
+CALORIES: 3200 kcal
+   Running a consistent deficit. Eat at maintenance today
+   to support recovery and fuel the leg session.
+
+PROTEIN: 178g target
+   Below target all week. Prioritize it today.
+
+RECOVERY: 8+ hours tonight
+   7-day sleep debt is at 12hrs; compounding fatigue will
+   limit strength gains if not addressed.
+
+FLAGS:
+   - Protein critically low: 102g avg vs 178g target this week
+   - Training load increased 110%, monitor for overreaching
+════════════════════════════════════════</pre>
+
+    <div class="chart-wrap">
+      <canvas id="proteinChart" height="150"></canvas>
+      <p class="chart-caption">7-day average protein intake vs. target, from the recommendation above</p>
+    </div>
+  </section>
+
+  <section class="sec">
+    <p class="sec-num">04</p>
+    <h2>Signals</h2>
+    <p>The feature layer translates raw daily numbers into the signals the recommendation engine actually reasons over.</p>
+    <table class="feat-table">
+      <thead><tr><th>Feature</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>sleep_debt_7d</code></td><td>Cumulative sleep deficit over 7 days (hours)</td></tr>
+        <tr><td><code>recovery_score</code></td><td>0-100 weighted composite of deep/REM/core sleep quality</td></tr>
+        <tr><td><code>training_load_7d</code></td><td>Total volume lifted in the last 7 days (lbs)</td></tr>
+        <tr><td><code>load_change_pct</code></td><td>Week-over-week training load change (%)</td></tr>
+        <tr><td><code>caloric_deficit_3d</code></td><td>Average daily caloric deficit over 3 days</td></tr>
+        <tr><td><code>protein_avg_7d</code></td><td>Average daily protein intake over 7 days (g)</td></tr>
+        <tr><td><code>{muscle}_volume_48h</code></td><td>Per-muscle-group training volume in last 48 hours</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="sec">
+    <p class="sec-num">05</p>
+    <h2>Built With</h2>
+    <p class="built-with">Python 3.11 and 3.12, <code>anthropic</code> for recommendation reasoning, <code>sqlite3</code> for local storage, the Hevy REST API for workout data, Apple HealthKit for sleep and nutrition, <code>pdfplumber</code> for Cal AI's PDF exports, and <code>pytest</code> for the test suite.</p>
+  </section>
+
+  <section class="sec">
+    <p class="sec-num">06</p>
+    <h2>Where This Went</h2>
+    <p>Triad started as a Python package: the data foundation. That package is now evolving into BodyByData, a full application built on top of it, where the package handles data normalization and feature engineering while the app adds the intelligence layer, daily recommendations, and a real interface people actually use.</p>
+    <a class="ref-link" href="#" data-placeholder="bodybydata-landing">
+      <span class="arrow">&#8594;</span> See BodyByData
+    </a>
+  </section>
+
+  <footer>
+    Jonathan Ascona &middot; BYU-Idaho Data Science &middot; &copy; 2026
+    <br>
+    <span class="footer-note">This page documents the project. Core source is private during development.</span>
+    <br>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+      <span class="knob"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="2.5" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="21.5"/><line x1="4.2" y1="4.2" x2="6" y2="6"/><line x1="18" y1="18" x2="19.8" y2="19.8"/><line x1="2.5" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="21.5" y2="12"/><line x1="4.2" y1="19.8" x2="6" y2="18"/><line x1="18" y1="6" x2="19.8" y2="4.2"/></svg></span>
+    </button>
+  </footer>
+
+</div>
+
+<script>
+  hljs.highlightAll();
+
+  let proteinChart;
+  function renderProteinChart() {
+    const styles = getComputedStyle(document.documentElement);
+    const text = styles.getPropertyValue('--text').trim();
+    const dim = styles.getPropertyValue('--text-dim').trim();
+    const accent = styles.getPropertyValue('--accent').trim();
+    const border = styles.getPropertyValue('--border').trim();
+
+    const ctx = document.getElementById('proteinChart');
+    if (proteinChart) proteinChart.destroy();
+    proteinChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['7-day average', 'Target'],
+        datasets: [{
+          data: [102, 178],
+          backgroundColor: [accent, border],
+          borderRadius: 4,
+          barThickness: 42
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: {
+            grid: { color: border },
+            ticks: { color: dim, font: { family: 'JetBrains Mono', size: 11 } },
+            title: { display: true, text: 'grams of protein / day', color: dim, font: { family: 'JetBrains Mono', size: 10 } }
+          },
+          y: {
+            grid: { display: false },
+            ticks: { color: text, font: { family: 'JetBrains Mono', size: 11 } }
+          }
+        }
+      }
+    });
+  }
+  renderProteinChart();
+
+  const toggle = document.getElementById('themeToggle');
+  const root = document.documentElement;
+  toggle.addEventListener('click', () => {
+    root.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    renderProteinChart();
+  });
+</script>
+
+</body>
+</html>
